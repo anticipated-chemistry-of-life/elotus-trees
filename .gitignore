@@ -37,3 +37,14 @@ vignettes/*.pdf
 
 # R Environment Variables
 .Renviron
+
+# Mac related
+*.DS_Store
+
+# Other
+.idea
+.vscode
+
+# Repo specific
+config/params/**
+data/**

@@ -1,0 +1,31 @@
+base_dir: ./
+config:
+  path: config
+  default:
+    path: config/default
+  params:
+    path: config/params
+data:
+  path: data
+  interim:
+    path: data/interim
+    config:
+      path: data/interim/config
+  processed:
+    path: data/processed
+    config:
+      path: data/processed/config
+  source:
+    path: data/source
+inst:
+  path: intst
+  scripts: 
+    path: inst/scripts/
+    docopt:
+      path: inst/scripts/docopt
+    sparql:
+      path: inst/scripts/sparql
+tests:
+  path: tests
+r:
+  path: R
