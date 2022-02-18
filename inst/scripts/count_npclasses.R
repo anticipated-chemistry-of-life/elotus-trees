@@ -89,7 +89,7 @@ message(
   "We have ",
   nrow(pathways |> dplyr::filter(values == 0)),
   " on ",
-  nrow(pathways),
+  nrow(pathways) - 1,
   " NPClassifier pathways not present in LOTUS"
 )
 message(pathways |> dplyr::filter(values == 0) |> dplyr::pull(name))
@@ -103,7 +103,7 @@ message(
   "We have ",
   nrow(superclasses |> dplyr::filter(values == 0)),
   " on ",
-  nrow(superclasses),
+  nrow(superclasses) - 1,
   " NPClassifier superclasses not present in LOTUS"
 )
 message(superclasses |> dplyr::filter(values == 0) |> dplyr::pull(name))
@@ -118,7 +118,7 @@ message(
   "We have ",
   nrow(classes |> dplyr::filter(values == 0)),
   " on ",
-  nrow(classes),
+  nrow(classes) - 1,
   " NPClassifier classes not present in LOTUS"
 )
 message(classes |> dplyr::filter(values == 0) |> dplyr::pull(name))
