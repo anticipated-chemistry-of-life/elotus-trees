@@ -123,9 +123,11 @@ start_date <- 1900
 end_date <- 2022
 
 genera <-
-  names(qids)[!grepl(pattern = " ",
-                     x = names(qids),
-                     fixed = TRUE)]
+  names(qids)[!grepl(
+    pattern = " ",
+    x = names(qids),
+    fixed = TRUE
+  )]
 
 query_part_1 <- readr::read_file(query_path_1)
 query_part_2 <- readr::read_file(query_path_2)
@@ -188,16 +190,20 @@ message("... for grouped taxa")
 hierarchies_grouped <- hierarchies_grouped_progress(tables)
 message("... combining")
 names(hierarchies_grouped) <- ifelse(
-  test = !grepl(pattern = "\\W+",
-                x = names(hierarchies_grouped))
-  ,
+  test = !grepl(
+    pattern = "\\W+",
+    x = names(hierarchies_grouped)
+  ),
   yes = paste(names(hierarchies_grouped),
-              "grouped",
-              sep = "_"),
+    "grouped",
+    sep = "_"
+  ),
   no = names(hierarchies_grouped)
 )
-hierarchies_simple <- hierarchies_simple[!grepl(pattern = "\\W+",
-                                                x = names(hierarchies_simple))]
+hierarchies_simple <- hierarchies_simple[!grepl(
+  pattern = "\\W+",
+  x = names(hierarchies_simple)
+)]
 hierarchies <- append(hierarchies_simple, hierarchies_grouped)
 
 if (!is.null(comparison)) {
@@ -241,24 +247,38 @@ histograms <- histograms_progress(prehistograms)
 
 message("Generating treemaps")
 treemaps <-
-  treemaps_progress(xs = names(hierarchies)[!grepl(pattern = "_grouped",
-                                                   x = names(hierarchies))])
+  treemaps_progress(xs = names(hierarchies)[!grepl(
+    pattern = "_grouped",
+    x = names(hierarchies)
+  )])
 
 message("Generating sunbursts")
 sunbursts <-
-  treemaps_progress(xs = names(hierarchies)[!grepl(pattern = "_grouped",
-                                                   x = names(hierarchies))],
-                    type = "sunburst")
+  treemaps_progress(
+    xs = names(hierarchies)[!grepl(
+      pattern = "_grouped",
+      x = names(hierarchies)
+    )],
+    type = "sunburst"
+  )
 
 treemaps <-
-  within(treemaps,
-         rm(list = names(treemaps)[grepl(pattern = "ae$",
-                                         x = names(treemaps))]))
+  within(
+    treemaps,
+    rm(list = names(treemaps)[grepl(
+      pattern = "ae$",
+      x = names(treemaps)
+    )])
+  )
 
 sunbursts <-
-  within(sunbursts,
-         rm(list = names(sunbursts)[grepl(pattern = "ae$",
-                                          x = names(sunbursts))]))
+  within(
+    sunbursts,
+    rm(list = names(sunbursts)[grepl(
+      pattern = "ae$",
+      x = names(sunbursts)
+    )])
+  )
 
 lapply(X = exports, FUN = check_export_dir)
 
@@ -312,16 +332,18 @@ lapply(
   FUN = function(x) {
     ggplot2::ggsave(
       plot = histograms[[x]],
-      filename = file.path(export_dir_histograms,
-                           paste0(
-                             "histogram_",
-                             gsub(
-                               pattern = " ",
-                               replacement = "_",
-                               x = x
-                             ),
-                             ".pdf"
-                           )),
+      filename = file.path(
+        export_dir_histograms,
+        paste0(
+          "histogram_",
+          gsub(
+            pattern = " ",
+            replacement = "_",
+            x = x
+          ),
+          ".pdf"
+        )
+      ),
       width = 16 * max((dimensions[[x]] / 30), 0.5),
       height = 9 * max((size[[x]] / 100), 1) * max((dimensions[[x]] / 30), 1),
       limitsize = FALSE
