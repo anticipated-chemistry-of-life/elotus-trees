@@ -15,7 +15,7 @@ classification_list <-
     }
   )
 
-full <- dplyr::bind_rows(classification_list,)
+full <- dplyr::bind_rows(classification_list, )
 
-classified <- full |> 
-  dplyr::filter(hits.classification_names != "NULL")
+classified <- full |>
+  dplyr::filter(hits.classification_names == "NULL")
