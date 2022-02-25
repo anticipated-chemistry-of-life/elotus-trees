@@ -1,5 +1,6 @@
 start <- Sys.time()
 
+library(package = devtools, quietly = TRUE)
 library(package = dplyr, quietly = TRUE)
 library(package = future, quietly = TRUE)
 library(package = future.apply, quietly = TRUE)
@@ -16,6 +17,10 @@ library(package = splitstackshape, quietly = TRUE)
 library(package = tidyr, quietly = TRUE)
 library(package = WikidataQueryServiceR, quietly = TRUE)
 library(package = yaml, quietly = TRUE)
+
+devtools::source_url(
+  "https://raw.githubusercontent.com/taxonomicallyinformedannotation/tima-r/main/R/get_lotus.R"
+)
 
 source(file = "R/check_export_dir.R")
 source(file = "R/colors.R")
@@ -39,10 +44,6 @@ source(file = "R/subtables_progress.R")
 source(file = "R/tables_progress.R")
 source(file = "R/treemaps_progress.R")
 source(file = "R/wiki_progress.R")
-
-devtools::source_url(
-  "https://raw.githubusercontent.com/taxonomicallyinformedannotation/tima-r/main/R/get_lotus.R"
-)
 
 future::plan(strategy = future::multisession)
 handlers(global = TRUE)

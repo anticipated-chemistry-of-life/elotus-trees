@@ -4,6 +4,7 @@ log_debug("This script plots an alternative magic tree.")
 start <- Sys.time()
 
 library(package = data.table, quietly = TRUE)
+library(package = devtools, quietly = TRUE)
 library(package = dplyr, quietly = TRUE)
 library(package = forcats, quietly = TRUE)
 library(package = ggplot2, quietly = TRUE)
@@ -18,13 +19,13 @@ library(package = splitstackshape, quietly = TRUE)
 library(package = tidyr, quietly = TRUE)
 library(package = yaml, quietly = TRUE)
 
-source(file = "r/colors.R")
-source(file = "r/prepare_hierarchy.R")
-source(file = "r/prepare_plot.R")
-
 devtools::source_url(
   "https://raw.githubusercontent.com/taxonomicallyinformedannotation/tima-r/main/R/get_lotus.R"
 )
+
+source(file = "r/colors.R")
+source(file = "r/prepare_hierarchy.R")
+source(file = "r/prepare_plot.R")
 
 export_dir <- "data/trees"
 export_name <- "full"
