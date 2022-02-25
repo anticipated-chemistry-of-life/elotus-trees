@@ -23,12 +23,13 @@ devtools::source_url(
   "https://raw.githubusercontent.com/taxonomicallyinformedannotation/tima-r/main/R/get_lotus.R"
 )
 
-source(file = "r/colors.R")
+source(file = "R/check_export_dir.R")
+source(file = "R/colors.R")
 source(file = "R/make_2D.R")
 source(file = "R/parse_yaml_params.R")
 source(file = "R/parse_yaml_paths.R")
-source(file = "r/prepare_hierarchy.R")
-source(file = "r/prepare_plot.R")
+source(file = "R/prepare_hierarchy.R")
+source(file = "R/prepare_plot.R")
 
 paths <- parse_yaml_paths()
 params <- parse_yaml_params()
@@ -51,12 +52,12 @@ if (!file.exists(paths$inst$extdata$source$libraries$lotus)) {
   message("LOTUS found")
 }
 
-lotus <- readr::read_delim(file = paths$inst$extdata$source$libraries$lotus) |>
-  data.table::data.table()
+lotus <- readr::read_delim(file = paths$inst$extdata$source$libraries$lotus)
 
 if (params$structure_dimensionality == 2) {
   lotus <- lotus |>
-    make_2D()
+    make_2D() |>
+    data.table::data.table()
 }
 
 if (!is.na(filter_taxon)) {
