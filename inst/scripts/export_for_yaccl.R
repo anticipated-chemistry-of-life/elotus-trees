@@ -1,4 +1,3 @@
-source(file = "R/log_debug.R")
 start <- Sys.time()
 
 #' Packages
@@ -11,7 +10,8 @@ packages_cran <-
 packages_bioconductor <- NULL
 packages_github <- NULL
 
-source(file = "R/check_and_load_packages.R")
+# source(file = "R/check_and_load_packages.R")
+# check_and_load_packages()
 
 #' TODO clean
 lotus_metadata_path <-
@@ -45,4 +45,4 @@ message(nrow(smiles_2D_classified), "to go")
 
 end <- Sys.time()
 
-log_debug("Script finished in", format(end - start))
+message("Script finished in", format(end - start))

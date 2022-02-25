@@ -15,7 +15,9 @@ packages_bioconductor <- NULL
 packages_github <- NULL
 
 source(file = "R/check_and_load_packages.R")
-source(file = "r/parse_yaml_paths.R")
+source(file = "R/parse_yaml_paths.R")
+
+check_and_load_packages()
 
 devtools::source_url(
   "https://raw.githubusercontent.com/lotusnprod/lotus-processor/main/src/r/treat_npclassifier_json.R"

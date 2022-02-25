@@ -8,6 +8,7 @@ packages_bioconductor <- NULL
 packages_github <- NULL
 
 source(file = "R/check_and_load_packages.R")
+check_and_load_packages()
 
 fromYaccl_path <- "~/Downloads/tmp/lotus/yaccl"
 
