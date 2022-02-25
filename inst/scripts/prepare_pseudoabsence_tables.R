@@ -28,9 +28,6 @@ devtools::source_url(
   "https://raw.githubusercontent.com/taxonomicallyinformedannotation/tima-r/main/R/get_lotus.R"
 )
 
-biological_level <- "organism_taxonomy_08genus"
-chemical_level <- "structure_taxonomy_npclassifier_02superclass"
-
 paths <- parse_yaml_paths()
 params <- parse_yaml_params()
 
@@ -45,7 +42,7 @@ message("Loading LOTUS")
 lotus <-
   readr::read_delim(file = paths$inst$extdata$source$libraries$lotus)
 
-if (params$structure_dimensionality == 2) {
+if (params$structures$dimensionality == 2) {
   lotus <- lotus |>
     make_2D()
 }
@@ -87,12 +84,12 @@ occurrence_referenced_table <- lotus |>
 message("Creating chemical referenced table")
 #' level as arguments to later compute all vs all levels
 chemical_referenced_table <- lotus |>
-  prepare_referenced_table(level = chemical_level)
+  prepare_referenced_table(level = params$structures$level)
 
 message("Creating biological referenced table")
 #' level as arguments to later compute all vs all levels
 biological_referenced_table <- lotus |>
-  prepare_referenced_table(level = biological_level)
+  prepare_referenced_table(level = params$organisms$level)
 
 end <- Sys.time()
 

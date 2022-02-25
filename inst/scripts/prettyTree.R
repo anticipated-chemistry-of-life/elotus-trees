@@ -43,13 +43,6 @@ params <- parse_yaml_params()
 export_dir <- "data/trees"
 export_name <- "full"
 
-#' TODO clean this
-n_min <- 50
-filter_level <- "organism_taxonomy_06family"
-filter_taxon <- "Gentianaceae" #' replace with NA for no filter
-group_level <- "organism_taxonomy_08genus"
-subgroup_level <- "organism_taxonomy_09species"
-
 if (!file.exists(paths$inst$extdata$source$libraries$lotus)) {
   message("Downloading LOTUS")
   get_lotus(export = paths$inst$extdata$source$libraries$lotus)
@@ -61,27 +54,27 @@ lotus <-
   readr::read_delim(file = paths$inst$extdata$source$libraries$lotus) |>
   data.table::data.table()
 
-if (params$structure_dimensionality == 2) {
+if (params$structures$dimensionality == 2) {
   lotus <- lotus |>
     make_2D() |>
     data.table::data.table()
 }
 
-if (!is.na(filter_taxon)) {
+if (!is.na(params$organisms$taxon)) {
   taxon_prerestricted <- lotus |>
-    dplyr::filter(!!as.name(filter_level) == filter_taxon)
+    dplyr::filter(!!as.name(params$organisms$level) == params$organisms$taxon)
 } else {
   taxon_prerestricted <- lotus
 }
 
 taxon_restricted <- taxon_prerestricted |>
-  dplyr::filter(!is.na(!!as.name(group_level))) |>
-  dplyr::distinct(structure_inchikey, !!as.name(group_level), .keep_all = TRUE) |>
-  dplyr::group_by(!!as.name(group_level)) |>
+  dplyr::filter(!is.na(!!as.name(params$organisms$group))) |>
+  dplyr::distinct(structure_inchikey, !!as.name(params$organisms$group), .keep_all = TRUE) |>
+  dplyr::group_by(!!as.name(params$organisms$group)) |>
   dplyr::add_count() |>
   dplyr::ungroup() |>
-  dplyr::filter(n >= n_min) |>
-  dplyr::distinct(!!as.name(group_level))
+  dplyr::filter(n >= params$structures$min) |>
+  dplyr::distinct(!!as.name(params$organisms$group))
 
 taxon_matched_restricted <-
   rotl::tnrs_match_names(
@@ -93,7 +86,7 @@ ott_in_tree <-
   rotl::ott_id(taxon_matched_restricted)[rotl::is_in_tree(rotl::ott_id(taxon_matched_restricted))]
 
 taxon_restricted <- taxon_restricted |>
-  dplyr::filter(!!as.name(group_level) %in% names(ott_in_tree))
+  dplyr::filter(!!as.name(params$organisms$group) %in% names(ott_in_tree))
 
 taxon_matched_restricted <-
   rotl::tnrs_match_names(
@@ -149,16 +142,16 @@ specific_classes <- taxon_prerestricted |>
     )
   ) |>
   dplyr::mutate_all(as.character) |>
-  dplyr::filter(!!as.name(group_level) %in% taxon_matched_restricted$unique_name) |>
+  dplyr::filter(!!as.name(params$organisms$group) %in% taxon_matched_restricted$unique_name) |>
   dplyr::filter(!is.na(structure_taxonomy_npclassifier_03class)) |>
-  dplyr::distinct(!!as.name(group_level),
+  dplyr::distinct(!!as.name(params$organisms$group),
     structure_inchikey,
     .keep_all = TRUE
   )
 
 specific_classes_o <- specific_classes |>
-  dplyr::group_by(!!as.name(group_level)) |>
-  dplyr::distinct(!!as.name(subgroup_level), .keep_all = TRUE) |>
+  dplyr::group_by(!!as.name(params$organisms$group)) |>
+  dplyr::distinct(!!as.name(params$organisms$subgroup), .keep_all = TRUE) |>
   dplyr::count(name = "o") |>
   dplyr::ungroup()
 
@@ -193,7 +186,7 @@ info <- taxonomy |>
       pattern = gsub(
         pattern = "organism_taxonomy_[0-9]{2}",
         replacement = "",
-        x = group_level
+        x = params$organisms$group
       ),
       x = names(taxonomy),
       ignore.case = TRUE
@@ -202,7 +195,7 @@ info <- taxonomy |>
   ) |>
   dplyr::mutate(Kingdom = forcats::fct_reorder(Kingdom, !is.na(Domain))) |>
   dplyr::mutate(Phylum = forcats::fct_reorder(Phylum, !is.na(Kingdom))) |>
-  dplyr::left_join(specific_classes_o, by = c("id" = group_level)) |>
+  dplyr::left_join(specific_classes_o, by = c("id" = params$organisms$group)) |>
   dplyr::mutate(id = gsub(
     pattern = " ",
     replacement = "_",
@@ -212,7 +205,7 @@ info <- taxonomy |>
 specific_classes_adapted <- specific_classes |>
   dplyr::distinct(
     structure = structure_wikidata,
-    organism = !!as.name(group_level),
+    organism = !!as.name(params$organisms$group),
     best_candidate_1 = structure_taxonomy_npclassifier_01pathway,
     best_candidate_2 = structure_taxonomy_npclassifier_02superclass,
     best_candidate_3 = structure_taxonomy_npclassifier_03class

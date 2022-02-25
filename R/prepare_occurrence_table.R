@@ -10,8 +10,8 @@
 #' @examples
 prepare_occurrence_table <-
   function(df,
-           bio_level = biological_level,
-           chemo_level = chemical_level) {
+           bio_level = params$organisms$level,
+           chemo_level = params$structures$level) {
     occurrence_table <- df |>
       dplyr::filter(!is.na(!!as.name(bio_level)) &
         !is.na(!!as.name(chemo_level))) |>

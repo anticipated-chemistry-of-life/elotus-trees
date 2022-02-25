@@ -205,7 +205,7 @@ results <- wiki_progress(queries)
 message("Cleaning tables and adding columns")
 tables <- tables_progress(results)
 
-if (params$structure_dimensionality == 2) {
+if (params$structures$dimensionality == 2) {
   tables_2 <- lapply(tables, make_2D)
 }
 

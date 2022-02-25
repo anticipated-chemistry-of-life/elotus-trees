@@ -1,12 +1,10 @@
-structure_dimensionality: 2
-param1: foo
-param2: bar
-param3:
-  subparam1: 50
-  subparam2: 3
-param4:
-  subparam1:
-    subsubparam1:
-      - list1
-      - list2
+structures:
+  dimensionality: 2
+  min: 25
+  level: structure_taxonomy_npclassifier_02superclass
+organisms:
+  level: organism_taxonomy_06family
+  taxon: Gentianaceae # let empty for no filter
+  group: organism_taxonomy_08genus
+  subgroup: organism_taxonomy_09species
 force: FALSE
