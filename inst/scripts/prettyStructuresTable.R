@@ -40,6 +40,10 @@ source(file = "R/tables_progress.R")
 source(file = "R/treemaps_progress.R")
 source(file = "R/wiki_progress.R")
 
+devtools::source_url(
+  "https://raw.githubusercontent.com/taxonomicallyinformedannotation/tima-r/main/R/get_lotus.R"
+)
+
 future::plan(strategy = future::multisession)
 handlers(global = TRUE)
 handlers("progress")
