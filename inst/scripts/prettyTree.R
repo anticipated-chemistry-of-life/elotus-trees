@@ -52,7 +52,8 @@ if (!file.exists(paths$inst$extdata$source$libraries$lotus)) {
   message("LOTUS found")
 }
 
-lotus <- readr::read_delim(file = paths$inst$extdata$source$libraries$lotus)
+lotus <- readr::read_delim(file = paths$inst$extdata$source$libraries$lotus) |>
+  data.table::data.table()
 
 if (params$structure_dimensionality == 2) {
   lotus <- lotus |>
