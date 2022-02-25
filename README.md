@@ -9,12 +9,11 @@ Not done for now...will do
 ## Working scripts
 
 - inst/scripts/count_npclasses.R
+- inst/scripts/prepare_pseudoabsence_tables.R (no output written for now)
 - inst/scripts/prettyStructuresTable.R
 - inst/scripts/prettyTree.R
 
 ## Dirty non-portable scripts (work in progress)
-
-- inst/scripts/prepare_pseudoabsence_tables.R
 
 - inst/scripts/export_for_yaccl.R
 - inst/scripts/treat_yaccl.R
