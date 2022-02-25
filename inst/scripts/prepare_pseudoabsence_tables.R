@@ -12,6 +12,8 @@ devtools::source_url(
 )
 source(file = "r/parse_yaml_paths.R")
 source(file = "r/prepare_occurrence_table.R")
+source(file = "r/prepare_occurrence_referenced_table.R")
+source(file = "r/prepare_referenced_table.R")
 
 biological_level <- "organism_taxonomy_08genus"
 chemical_level <- "structure_taxonomy_npclassifier_02superclass"
@@ -57,3 +59,22 @@ message("Creating occurrence table")
 #' bio and chemo levels as arguments to later compute all vs all levels
 occurrence_table <- lotus |>
   prepare_occurrence_table()
+
+message("Creating occurrences referenced table")
+#' bio and chemo levels as arguments to later compute all vs all levels
+occurrence_referenced_table <- lotus |>
+  prepare_occurrence_referenced_table()
+
+message("Creating chemical referenced table")
+#' level as arguments to later compute all vs all levels
+chemical_referenced_table <- lotus |>
+  prepare_referenced_table(level = chemical_level)
+
+message("Creating biological referenced table")
+#' level as arguments to later compute all vs all levels
+biological_referenced_table <- lotus |>
+  prepare_referenced_table(level = biological_level)
+
+end <- Sys.time()
+
+log_debug("Script finished in", crayon::green(format(end - start)))
