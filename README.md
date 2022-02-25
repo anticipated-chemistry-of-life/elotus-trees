@@ -14,6 +14,8 @@ Not done for now...will do
 
 ## Dirty non-portable scripts (work in progress)
 
+- inst/scripts/prepare_pseudoabsence_tables.R
+
 - inst/scripts/export_for_yaccl.R
 - inst/scripts/treat_yaccl.R
 
