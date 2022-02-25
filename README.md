@@ -2,9 +2,17 @@
 
 Repository for first explorations on lotus data.
 
-## Environment
+## tl;dr
 
-Not done for now...will do
+Normally, all paths and parameters are externalized in `paths.yaml` and `config/default/params.yaml`.
+This means you should not need to modify any arguments in R scripts.
+If anyone feels uncomfortable with this way to do, shout out loud. 
+We might also implement those arguments as command line arguments.
+
+## Required packages
+
+They should install from themselves if you do not have them.
+Only thing you will probably need to configure is `remotes` as described [here](https://remotes.r-lib.org/).
 
 ## Working scripts
 
