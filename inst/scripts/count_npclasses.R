@@ -1,21 +1,36 @@
-library(dplyr)
-library(jsonlite)
-library(readr)
-library(tidyr)
+start <- Sys.time()
 
-source("~/Git/lotus-processor/src/r/treat_npclassifier_json.R")
+library(package = devtools, quietly = TRUE)
+library(package = dplyr, quietly = TRUE)
+library(package = jsonlite, quietly = TRUE)
+library(package = readr, quietly = TRUE)
+library(package = tidyr, quietly = TRUE)
+library(package = yaml, quietly = TRUE)
 
-path_npc_json <-
-  "https://raw.githubusercontent.com/mwang87/NP-Classifier/7e4e2001a1416b96968240650dc7d70f1275fdb5/Classifier/dict/index_v1.json"
+devtools::source_url(
+  "https://raw.githubusercontent.com/lotusnprod/lotus-processor/main/src/r/treat_npclassifier_json.R"
+)
+devtools::source_url(
+  "https://raw.githubusercontent.com/taxonomicallyinformedannotation/tima-r/main/R/get_lotus.R"
+)
+source(file = "r/parse_yaml_paths.R")
 
-classified_path <-
-  "~/Git/lotus-processor/data/processed/220208_frozen_metadata.csv.gz"
+paths <- parse_yaml_paths()
+
+if (!file.exists(paths$inst$extdata$source$libraries$lotus)) {
+  message("Downloading LOTUS")
+  get_lotus(export = paths$inst$extdata$source$libraries$lotus)
+} else {
+  message("LOTUS found")
+}
 
 message("Loading LOTUS classified structures")
 structures_classified <- readr::read_delim(
-  file = classified_path,
+  file = paths$inst$extdata$source$libraries$lotus,
   col_select = c(
     "structure_id" = "structure_inchikey",
+    # "structure_exact_mass",
+    # "structure_xlogp",
     "chemical_pathway" = "structure_taxonomy_npclassifier_01pathway",
     "chemical_superclass" = "structure_taxonomy_npclassifier_02superclass",
     "chemical_class" = "structure_taxonomy_npclassifier_03class"
@@ -24,7 +39,7 @@ structures_classified <- readr::read_delim(
   dplyr::distinct()
 
 message("Loading NPClassifier taxonomy")
-taxonomy <- jsonlite::fromJSON(txt = path_npc_json)
+taxonomy <- jsonlite::fromJSON(txt = paths$urls$npc_json)
 
 message("Cleaning NPClassifier taxonomy")
 taxonomy_semiclean <- treat_npclassifier_json() |>
@@ -136,3 +151,7 @@ message(
     dplyr::distinct(structure_id)),
   " LOTUS structures that are not classified at all by NPClassifier"
 )
+
+end <- Sys.time()
+
+log_debug("Script finished in", crayon::green(format(end - start)))

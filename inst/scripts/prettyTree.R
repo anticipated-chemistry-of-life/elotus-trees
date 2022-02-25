@@ -16,12 +16,12 @@ library(package = readr, quietly = TRUE)
 library(package = rotl, quietly = TRUE)
 library(package = splitstackshape, quietly = TRUE)
 library(package = tidyr, quietly = TRUE)
+library(package = yaml, quietly = TRUE)
+
 source(file = "r/colors.R")
 source(file = "r/prepare_hierarchy.R")
 source(file = "r/prepare_plot.R")
 
-classified_path <-
-  "~/Git/lotus-processor/data/processed/220208_frozen_metadata.csv.gz"
 export_dir <- "data/trees"
 export_name <- "full"
 
@@ -31,7 +31,16 @@ filter_taxon <- "Gentianaceae" #' replace with NA for no filter
 group_level <- "organism_taxonomy_08genus"
 subgroup_level <- "organism_taxonomy_09species"
 
-pairs_metadata <- readr::read_delim(file = classified_path) |>
+paths <- parse_yaml_paths()
+
+if (!file.exists(paths$inst$extdata$source$libraries$lotus)) {
+  message("Downloading LOTUS")
+  get_lotus(export = paths$inst$extdata$source$libraries$lotus)
+} else {
+  message("LOTUS found")
+}
+
+pairs_metadata <- readr::read_delim(file = paths$inst$extdata$source$libraries$lotus) |>
   data.table::data.table()
 
 if (!is.na(filter_taxon)) {

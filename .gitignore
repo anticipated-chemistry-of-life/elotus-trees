@@ -48,3 +48,4 @@ vignettes/*.pdf
 # Repo specific
 config/params/**
 data/**
+inst/extdata/**
