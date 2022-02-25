@@ -1,7 +1,19 @@
-library(dplyr)
-library(readr)
-library(stringr)
+source(file = "R/log_debug.R")
+start <- Sys.time()
 
+#' Packages
+packages_cran <-
+  c(
+    "dplyr",
+    "readr",
+    "stringr"
+  )
+packages_bioconductor <- NULL
+packages_github <- NULL
+
+source(file = "R/check_and_load_packages.R")
+
+#' TODO clean
 lotus_metadata_path <-
   "~/Git/lotus-processor/data/processed/220208_frozen_metadata.csv.gz"
 
@@ -28,3 +40,9 @@ smiles_2D_classified <- readr::read_delim(
     file = forYaccl_path,
     col_names = FALSE
   )
+
+message(nrow(smiles_2D_classified), "to go")
+
+end <- Sys.time()
+
+log_debug("Script finished in", format(end - start))

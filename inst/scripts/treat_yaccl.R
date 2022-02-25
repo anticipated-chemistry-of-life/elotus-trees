@@ -1,6 +1,13 @@
-library(dplyr)
-library(jsonlite)
-library(readr)
+source(file = "R/log_debug.R")
+start <- Sys.time()
+
+#' Packages
+packages_cran <-
+  c("dplyr", "jsonlite", "jsonlite", "readr")
+packages_bioconductor <- NULL
+packages_github <- NULL
+
+source(file = "R/check_and_load_packages.R")
 
 fromYaccl_path <- "~/Downloads/tmp/lotus/yaccl"
 
@@ -19,3 +26,7 @@ full <- dplyr::bind_rows(classification_list)
 
 classified <- full |>
   dplyr::filter(hits.classification_names == "NULL")
+
+end <- Sys.time()
+
+log_debug("Script finished in", format(end - start))

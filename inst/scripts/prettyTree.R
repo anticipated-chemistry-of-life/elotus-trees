@@ -1,28 +1,27 @@
-source(file = "r/log_debug.R")
+source(file = "R/log_debug.R")
 log_debug("This script plots an alternative magic tree.")
 
 start <- Sys.time()
 
-library(package = data.table, quietly = TRUE)
-library(package = devtools, quietly = TRUE)
-library(package = dplyr, quietly = TRUE)
-library(package = forcats, quietly = TRUE)
-library(package = ggplot2, quietly = TRUE)
-library(package = ggtree, quietly = TRUE)
-library(package = ggtreeExtra, quietly = TRUE)
-library(package = ggstar, quietly = TRUE)
-library(package = ggnewscale, quietly = TRUE)
-library(package = microshades, quietly = TRUE)
-library(package = readr, quietly = TRUE)
-library(package = rotl, quietly = TRUE)
-library(package = splitstackshape, quietly = TRUE)
-library(package = tidyr, quietly = TRUE)
-library(package = yaml, quietly = TRUE)
+#' Packages
+packages_cran <-
+  c(
+    "data.table",
+    "devtools",
+    "dplyr",
+    "forcats",
+    "ggplot2",
+    "ggnewscale",
+    "readr",
+    "rotl",
+    "splitstackshape",
+    "tidyr",
+    "yaml"
+  )
+packages_bioconductor <- c("ggtree", "ggtreeExtra", "ggstar")
+packages_github <- c("KarstensLab/microshades")
 
-devtools::source_url(
-  "https://raw.githubusercontent.com/taxonomicallyinformedannotation/tima-r/main/R/get_lotus.R"
-)
-
+source(file = "R/check_and_load_packages.R")
 source(file = "R/check_export_dir.R")
 source(file = "R/colors.R")
 source(file = "R/make_2D.R")
@@ -30,6 +29,10 @@ source(file = "R/parse_yaml_params.R")
 source(file = "R/parse_yaml_paths.R")
 source(file = "R/prepare_hierarchy.R")
 source(file = "R/prepare_plot.R")
+
+devtools::source_url(
+  "https://raw.githubusercontent.com/taxonomicallyinformedannotation/tima-r/main/R/get_lotus.R"
+)
 
 paths <- parse_yaml_paths()
 params <- parse_yaml_params()
@@ -52,7 +55,8 @@ if (!file.exists(paths$inst$extdata$source$libraries$lotus)) {
   message("LOTUS found")
 }
 
-lotus <- readr::read_delim(file = paths$inst$extdata$source$libraries$lotus) |>
+lotus <-
+  readr::read_delim(file = paths$inst$extdata$source$libraries$lotus) |>
   data.table::data.table()
 
 if (params$structure_dimensionality == 2) {

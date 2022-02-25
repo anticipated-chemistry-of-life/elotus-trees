@@ -1,21 +1,30 @@
+source(file = "R/log_debug.R")
 start <- Sys.time()
 
-library(package = devtools, quietly = TRUE)
-library(package = dplyr, quietly = TRUE)
-library(package = readr, quietly = TRUE)
-library(package = tibble, quietly = TRUE)
-library(package = tidyr, quietly = TRUE)
-library(package = yaml, quietly = TRUE)
+#' Packages
+packages_cran <-
+  c(
+    "devtools",
+    "dplyr",
+    "readr",
+    "tibble",
+    "tidyr",
+    "yaml"
+  )
+packages_bioconductor <- NULL
+packages_github <- NULL
+
+source(file = "R/check_and_load_packages.R")
+source(file = "R/parse_yaml_params.R")
+source(file = "R/parse_yaml_paths.R")
+source(file = "R/prepare_occurrence_table.R")
+source(file = "R/prepare_occurrence_referenced_table.R")
+source(file = "R/prepare_referenced_table.R")
+source(file = "R/make_2D.R")
 
 devtools::source_url(
   "https://raw.githubusercontent.com/taxonomicallyinformedannotation/tima-r/main/R/get_lotus.R"
 )
-source(file = "R/parse_yaml_params.R")
-source(file = "r/parse_yaml_paths.R")
-source(file = "r/prepare_occurrence_table.R")
-source(file = "r/prepare_occurrence_referenced_table.R")
-source(file = "r/prepare_referenced_table.R")
-source(file = "R/make_2D.R")
 
 biological_level <- "organism_taxonomy_08genus"
 chemical_level <- "structure_taxonomy_npclassifier_02superclass"
@@ -85,4 +94,4 @@ biological_referenced_table <- lotus |>
 
 end <- Sys.time()
 
-log_debug("Script finished in", crayon::green(format(end - start)))
+log_debug("Script finished in", format(end - start))

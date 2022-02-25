@@ -1,34 +1,37 @@
+source(file = "R/log_debug.R")
 start <- Sys.time()
 
-library(package = devtools, quietly = TRUE)
-library(package = dplyr, quietly = TRUE)
-library(package = future, quietly = TRUE)
-library(package = future.apply, quietly = TRUE)
-library(package = ggplot2, quietly = TRUE)
-library(package = gt, quietly = TRUE)
-library(package = htmltools, quietly = TRUE)
-library(package = microshades, quietly = TRUE)
-library(package = plotly, quietly = TRUE)
-library(package = progressr, quietly = TRUE)
-library(package = purrr, quietly = TRUE)
-library(package = RCurl, quietly = TRUE)
-library(package = readr, quietly = TRUE)
-library(package = splitstackshape, quietly = TRUE)
-library(package = tidyr, quietly = TRUE)
-library(package = WikidataQueryServiceR, quietly = TRUE)
-library(package = yaml, quietly = TRUE)
+#' Packages
+packages_cran <-
+  c(
+    "devtools",
+    "dplyr",
+    "future",
+    "future.apply",
+    "ggplot2",
+    "gt",
+    "htmltools",
+    "plotly",
+    "progressr",
+    "purrr",
+    "RCurl",
+    "readr",
+    "rotl",
+    "splitstackshape",
+    "tidyr",
+    "WikidataQueryServiceR",
+    "yaml"
+  )
+packages_bioconductor <- NULL
+packages_github <- c("KarstensLab/microshades")
 
-devtools::source_url(
-  "https://raw.githubusercontent.com/taxonomicallyinformedannotation/tima-r/main/R/get_lotus.R"
-)
-
+source(file = "R/check_and_load_packages.R")
 source(file = "R/check_export_dir.R")
 source(file = "R/colors.R")
 source(file = "R/format_gt.R")
 source(file = "R/hierarchies_progress.R")
 source(file = "R/hierarchies_grouped_progress.R")
 source(file = "R/histograms_progress.R")
-source(file = "R/log_debug.R")
 source(file = "R/make_2D.R")
 source(file = "R/molinfo.R")
 source(file = "R/parse_yaml_params.R")
@@ -46,6 +49,10 @@ source(file = "R/subtables_progress.R")
 source(file = "R/tables_progress.R")
 source(file = "R/treemaps_progress.R")
 source(file = "R/wiki_progress.R")
+
+devtools::source_url(
+  "https://raw.githubusercontent.com/taxonomicallyinformedannotation/tima-r/main/R/get_lotus.R"
+)
 
 future::plan(strategy = future::multisession)
 handlers(global = TRUE)
@@ -70,6 +77,7 @@ exports <-
     export_dir_treemaps
   )
 
+#' TODO clean this
 #' As there is no better way than to manually assess if the QID
 #' really corresponds to what you want
 qids <- list(
@@ -115,6 +123,7 @@ qids <- list(
   # "Papiliotrema rajasthanensis" = "Q27866418"
 )
 
+#' TODO clean this
 comparison <-
   c(
     "Arnica montana",
@@ -126,6 +135,7 @@ comparison <-
 # comparison <- c("Gentiana", "Swertia")
 # comparison <- c("Dendrobium", "Trichoderma")
 
+#' TODO clean this
 limit <- 50000
 start_date <- 1900
 end_date <- 2022

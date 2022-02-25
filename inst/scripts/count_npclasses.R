@@ -1,11 +1,21 @@
+source(file = "R/log_debug.R")
 start <- Sys.time()
 
-library(package = devtools, quietly = TRUE)
-library(package = dplyr, quietly = TRUE)
-library(package = jsonlite, quietly = TRUE)
-library(package = readr, quietly = TRUE)
-library(package = tidyr, quietly = TRUE)
-library(package = yaml, quietly = TRUE)
+#' Packages
+packages_cran <-
+  c(
+    "devtools",
+    "dplyr",
+    "jsonlite",
+    "readr",
+    "tidyr",
+    "yaml"
+  )
+packages_bioconductor <- NULL
+packages_github <- NULL
+
+source(file = "R/check_and_load_packages.R")
+source(file = "r/parse_yaml_paths.R")
 
 devtools::source_url(
   "https://raw.githubusercontent.com/lotusnprod/lotus-processor/main/src/r/treat_npclassifier_json.R"
@@ -13,8 +23,6 @@ devtools::source_url(
 devtools::source_url(
   "https://raw.githubusercontent.com/taxonomicallyinformedannotation/tima-r/main/R/get_lotus.R"
 )
-
-source(file = "r/parse_yaml_paths.R")
 
 paths <- parse_yaml_paths()
 
