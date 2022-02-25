@@ -10,15 +10,18 @@ library(package = yaml, quietly = TRUE)
 devtools::source_url(
   "https://raw.githubusercontent.com/taxonomicallyinformedannotation/tima-r/main/R/get_lotus.R"
 )
+source(file = "R/parse_yaml_params.R")
 source(file = "r/parse_yaml_paths.R")
 source(file = "r/prepare_occurrence_table.R")
 source(file = "r/prepare_occurrence_referenced_table.R")
 source(file = "r/prepare_referenced_table.R")
+source(file = "R/make_2D.R")
 
 biological_level <- "organism_taxonomy_08genus"
 chemical_level <- "structure_taxonomy_npclassifier_02superclass"
 
 paths <- parse_yaml_paths()
+params <- parse_yaml_params()
 
 if (!file.exists(paths$inst$extdata$source$libraries$lotus)) {
   message("Downloading LOTUS")
@@ -30,6 +33,11 @@ if (!file.exists(paths$inst$extdata$source$libraries$lotus)) {
 message("Loading LOTUS")
 lotus <-
   readr::read_delim(file = paths$inst$extdata$source$libraries$lotus)
+
+if (params$structure_dimensionality == 2) {
+  lotus <- lotus |>
+    make_2D()
+}
 
 message("Creating chemical classes dictionary")
 chemical_classes_dictionary <- lotus |>

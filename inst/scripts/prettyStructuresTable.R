@@ -29,7 +29,9 @@ source(file = "R/hierarchies_progress.R")
 source(file = "R/hierarchies_grouped_progress.R")
 source(file = "R/histograms_progress.R")
 source(file = "R/log_debug.R")
+source(file = "R/make_2D.R")
 source(file = "R/molinfo.R")
+source(file = "R/parse_yaml_params.R")
 source(file = "R/parse_yaml_paths.R")
 source(file = "R/plot_histograms.R")
 source(file = "R/prehistograms_progress.R")
@@ -50,7 +52,9 @@ handlers(global = TRUE)
 handlers("progress")
 
 paths <- parse_yaml_paths()
+params <- parse_yaml_params()
 
+#' TODO clean this
 export_dir <- "data"
 export_dir_histograms <- file.path(export_dir, "histograms")
 export_dir_sunbursts <- file.path(export_dir, "sunbursts")
@@ -150,6 +154,7 @@ structures_classified <- readr::read_delim(
   file = paths$inst$extdata$source$libraries$lotus,
   col_select = c(
     "structure_id" = "structure_inchikey",
+    "structure_smiles_2D",
     "structure_exact_mass",
     "structure_xlogp",
     "chemical_pathway" = "structure_taxonomy_npclassifier_01pathway",
@@ -187,6 +192,10 @@ results <- wiki_progress(queries)
 
 message("Cleaning tables and adding columns")
 tables <- tables_progress(results)
+
+if (params$structure_dimensionality == 2) {
+  tables_2 <- lapply(tables, make_2D)
+}
 
 message("Generating subtables based on chemical classification")
 subtables <- subtables_progress(tables)

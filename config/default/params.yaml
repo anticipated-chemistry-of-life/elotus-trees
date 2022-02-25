@@ -1,3 +1,4 @@
+structure_dimensionality: 2
 param1: foo
 param2: bar
 param3:

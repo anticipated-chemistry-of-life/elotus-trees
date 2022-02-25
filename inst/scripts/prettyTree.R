@@ -24,19 +24,25 @@ devtools::source_url(
 )
 
 source(file = "r/colors.R")
+source(file = "R/make_2D.R")
+source(file = "R/parse_yaml_params.R")
+source(file = "R/parse_yaml_paths.R")
 source(file = "r/prepare_hierarchy.R")
 source(file = "r/prepare_plot.R")
 
+paths <- parse_yaml_paths()
+params <- parse_yaml_params()
+
+#' TODO clean this
 export_dir <- "data/trees"
 export_name <- "full"
 
+#' TODO clean this
 n_min <- 50
 filter_level <- "organism_taxonomy_06family"
 filter_taxon <- "Gentianaceae" #' replace with NA for no filter
 group_level <- "organism_taxonomy_08genus"
 subgroup_level <- "organism_taxonomy_09species"
-
-paths <- parse_yaml_paths()
 
 if (!file.exists(paths$inst$extdata$source$libraries$lotus)) {
   message("Downloading LOTUS")
@@ -45,14 +51,19 @@ if (!file.exists(paths$inst$extdata$source$libraries$lotus)) {
   message("LOTUS found")
 }
 
-pairs_metadata <- readr::read_delim(file = paths$inst$extdata$source$libraries$lotus) |>
+lotus <- readr::read_delim(file = paths$inst$extdata$source$libraries$lotus) |>
   data.table::data.table()
 
+if (params$structure_dimensionality == 2) {
+  lotus <- lotus |>
+    make_2D()
+}
+
 if (!is.na(filter_taxon)) {
-  taxon_prerestricted <- pairs_metadata |>
+  taxon_prerestricted <- lotus |>
     dplyr::filter(!!as.name(filter_level) == filter_taxon)
 } else {
-  taxon_prerestricted <- pairs_metadata
+  taxon_prerestricted <- lotus
 }
 
 taxon_restricted <- taxon_prerestricted |>
@@ -98,9 +109,9 @@ tr_restricted <- rotl::tol_induced_subtree(ott_ids = ott_in_tree)
 
 specific_classes <- taxon_prerestricted |>
   splitstackshape::cSplit(
-    splitCols = colnames(pairs_metadata)[pairs_metadata[, grepl(
+    splitCols = colnames(lotus)[lotus[, grepl(
       pattern = "structure_taxonomy_npclassifier_",
-      x = colnames(pairs_metadata)
+      x = colnames(lotus)
     )]],
     sep = "|",
     direction = "long"
@@ -153,7 +164,7 @@ tr_restricted$tip.label <-
 taxonomy <-
   dplyr::left_join(
     taxon_restricted,
-    pairs_metadata
+    lotus
   ) |>
   dplyr::distinct(
     Domain = organism_taxonomy_01domain,

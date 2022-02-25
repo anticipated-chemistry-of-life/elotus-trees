@@ -3,8 +3,10 @@ config:
   path: config
   default:
     path: config/default
+    file: config/default/params.yaml
   params:
     path: config/params
+    file: config/params/params.yaml
 data:
   path: data
   interim:
