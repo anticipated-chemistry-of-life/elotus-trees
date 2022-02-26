@@ -10,7 +10,7 @@ packages_github <- NULL
 source(file = "R/check_and_load_packages.R")
 check_and_load_packages()
 
-fromYaccl_path <- "~/Downloads/tmp/lotus/yaccl"
+fromYaccl_path <- "~/Git/lotus-processor/data/interim/dictionaries_full/structure/yaccl"
 
 already_classified <- list.files(fromYaccl_path, full.names = TRUE)
 

@@ -19,7 +19,7 @@ lotus_metadata_path <-
 
 forYaccl_path <- "~/Git/elotus-trees/data/smiles4yaccl.txt"
 
-fromYaccl_path <- "~/Downloads/tmp/lotus/yaccl"
+fromYaccl_path <- "~/Git/lotus-processor/data/interim/dictionaries_full/structure/yaccl"
 
 already_classified <- list.files(fromYaccl_path) |>
   gsub(
