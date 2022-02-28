@@ -15,12 +15,13 @@ packages_bioconductor <- NULL
 packages_github <- NULL
 
 source(file = "R/check_and_load_packages.R")
+source(file = "R/load_lotus.R")
+source(file = "R/make_2D.R")
 source(file = "R/parse_yaml_params.R")
 source(file = "R/parse_yaml_paths.R")
 source(file = "R/prepare_occurrence_table.R")
 source(file = "R/prepare_occurrence_referenced_table.R")
 source(file = "R/prepare_referenced_table.R")
-source(file = "R/make_2D.R")
 
 check_and_load_packages()
 

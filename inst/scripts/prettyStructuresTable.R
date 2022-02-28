@@ -32,6 +32,7 @@ source(file = "R/format_gt.R")
 source(file = "R/hierarchies_progress.R")
 source(file = "R/hierarchies_grouped_progress.R")
 source(file = "R/histograms_progress.R")
+source(file = "R/load_lotus.R")
 source(file = "R/make_2D.R")
 source(file = "R/molinfo.R")
 source(file = "R/parse_yaml_params.R")
@@ -65,20 +66,13 @@ params <- parse_yaml_params()
 
 load_lotus()
 
-#' TODO clean this
-export_dir <- "data"
-export_dir_histograms <- file.path(export_dir, "histograms")
-export_dir_sunbursts <- file.path(export_dir, "sunbursts")
-export_dir_tables <- file.path(export_dir, "tables")
-export_dir_treemaps <- file.path(export_dir, "treemaps")
-
 exports <-
   list(
-    export_dir,
-    export_dir_histograms,
-    export_dir_sunbursts,
-    export_dir_tables,
-    export_dir_treemaps
+    paths$data$path,
+    paths$data$histograms$path,
+    paths$data$sunbursts$path,
+    paths$data$tables$path,
+    paths$data$treemaps$path
   )
 
 #' TODO clean this
@@ -138,11 +132,6 @@ comparison <-
   )
 # comparison <- c("Gentiana", "Swertia")
 # comparison <- c("Dendrobium", "Trichoderma")
-
-#' TODO clean this
-limit <- 50000
-start_date <- 1900
-end_date <- 2022
 
 genera <-
   names(qids)[!grepl(
@@ -342,7 +331,7 @@ save_histograms_progress(names(histograms))
 #   FUN = function(x) {
 #     plotly::save_image(
 #       p = sunbursts[[x]],
-#       file = file.path(export_dir_sunbursts,
+#       file = file.path(paths$data$sunbursts$path,
 #                        paste0(
 #                          "sunburst_",
 #                          gsub(
@@ -361,7 +350,7 @@ save_histograms_progress(names(histograms))
 # for (i in names(treemaps)) {
 #   plotly::save_image(
 #     p = treemaps[[i]],
-#     file = file.path(export_dir_treemaps,
+#     file = file.path(paths$data$treemaps$path,
 #                      paste0(
 #                        "treemap_",
 #                        gsub(

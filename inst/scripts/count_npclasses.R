@@ -15,8 +15,8 @@ packages_bioconductor <- NULL
 packages_github <- NULL
 
 source(file = "R/check_and_load_packages.R")
-source(file = "R/parse_yaml_paths.R")
 source(file = "R/load_lotus.R")
+source(file = "R/parse_yaml_paths.R")
 
 check_and_load_packages()
 
