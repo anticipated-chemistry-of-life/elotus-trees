@@ -87,6 +87,19 @@ message("Creating biological referenced table")
 biological_referenced_table <- lotus |>
   prepare_referenced_table(level = params$organisms$level)
 
+#' WIP exploration
+# library(plotly)
+# heatmap_occ <- plot_ly(z = occurrence_table, 
+#                        zauto = FALSE, 
+#                        zmax = 50)
+# heatmap_occ_ref <- plot_ly(z = occurrence_referenced_table, 
+#                            zauto = FALSE, 
+#                            zmax = 50)
+# heatmap_bio <- plot_ly(z = biological_referenced_table, 
+#                        zauto = FALSE, 
+#                        zmax = 500)
+# heatmap_chemo <- plot_ly(z = chemical_referenced_table)
+
 end <- Sys.time()
 
 log_debug("Script finished in", format(end - start))
