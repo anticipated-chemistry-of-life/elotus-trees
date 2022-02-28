@@ -39,9 +39,12 @@ devtools::source_url(
 paths <- parse_yaml_paths()
 params <- parse_yaml_params()
 
-#' TODO clean this
-export_dir <- "data/trees"
-export_name <- "full"
+export_name <-
+  ifelse(
+    test = !is.null(params$organisms$taxon),
+    yes = params$organisms$taxon,
+    no = "full"
+  )
 
 load_lotus()
 
@@ -64,7 +67,10 @@ if (!is.na(params$organisms$taxon)) {
 
 taxon_restricted <- taxon_prerestricted |>
   dplyr::filter(!is.na(!!as.name(params$organisms$group))) |>
-  dplyr::distinct(structure_inchikey, !!as.name(params$organisms$group), .keep_all = TRUE) |>
+  dplyr::distinct(structure_inchikey,
+    !!as.name(params$organisms$group),
+    .keep_all = TRUE
+  ) |>
   dplyr::group_by(!!as.name(params$organisms$group)) |>
   dplyr::add_count() |>
   dplyr::ungroup() |>
@@ -427,11 +433,11 @@ p_abs <- p +
     na.value = "grey"
   )
 
-lapply(X = export_dir, FUN = check_export_dir)
+lapply(X = paths$data$trees$path, FUN = check_export_dir)
 
 ggplot2::ggsave(
   filename = file.path(
-    export_dir,
+    paths$data$trees$path,
     paste("tree", export_name, "relative.pdf", sep = "_")
   ),
   plot = p_rel,
@@ -443,7 +449,7 @@ ggplot2::ggsave(
 
 ggplot2::ggsave(
   filename = file.path(
-    export_dir,
+    paths$data$trees$path,
     paste("tree", export_name, "absolute.pdf", sep = "_")
   ),
   plot = p_abs,

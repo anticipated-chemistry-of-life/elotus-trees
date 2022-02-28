@@ -9,16 +9,16 @@ config:
     file: config/params/params.yaml
 data:
   path: data
-  interim:
-    path: data/interim
-    config:
-      path: data/interim/config
-  processed:
-    path: data/processed
-    config:
-      path: data/processed/config
-  source:
-    path: data/source
+  histograms:
+    path: data/histograms
+  sunbursts:
+    path: data/sunbursts
+  tables:
+    path: data/tables
+  treemaps:
+    path: data/treemaps
+  trees:
+    path: data/trees
 inst:
   path: intst
   extdata:
