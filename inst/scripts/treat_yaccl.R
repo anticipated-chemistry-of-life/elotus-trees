@@ -132,6 +132,30 @@ yaccl_hierarchy_named <- yaccl_hierarchy_expanded |>
   ) |>
   dplyr::distinct()
 
+stats <- yaccl_hierarchy_named |>
+  dplyr::group_by(id) |>
+  dplyr::arrange(dplyr::desc(parentLevel)) |>
+  dplyr::distinct(id, .keep_all = TRUE) |>
+  dplyr::group_by(parentLevel) |>
+  dplyr::add_count() |>
+  dplyr::ungroup()
+
+potential_curation <- stats |>
+  dplyr::filter(parentLevel == "01") |>
+  dplyr::select(-n) |>
+  dplyr::distinct() |>
+  dplyr::group_by(parentLevel, label) |>
+  dplyr::add_count()
+
+smiles_classified <- full |>
+  dplyr::filter(hits.classification_names != "NULL") |>
+  dplyr::group_by(molecule, ikey) |>
+  dplyr::select(-hits.biological_process) |>
+  #' TODO report this problem to yaccl git.
+  #' Actually biological process not linked to all hits
+  #' mapping get lost, for the moment simply ignore linked biological processes
+  tidyr::unnest(cols = c(hits.classification_names))
+
 end <- Sys.time()
 
 log_debug("Script finished in", format(end - start))
