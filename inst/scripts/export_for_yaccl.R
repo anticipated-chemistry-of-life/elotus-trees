@@ -5,21 +5,23 @@ packages_cran <-
   c(
     "dplyr",
     "readr",
-    "stringr"
+    "stringr",
+    "yaml"
   )
 packages_bioconductor <- NULL
 packages_github <- NULL
 
-# source(file = "R/check_and_load_packages.R")
-# check_and_load_packages()
+source(file = "R/check_and_load_packages.R")
+source(file = "R/parse_yaml_paths.R")
+source(file = "R/load_lotus.R")
 
 #' TODO clean
-lotus_metadata_path <-
-  "~/Git/lotus-processor/data/processed/220208_frozen_metadata.csv.gz"
-
 forYaccl_path <- "~/Git/elotus-trees/data/smiles4yaccl.txt"
-
 fromYaccl_path <- "~/Git/lotus-processor/data/interim/dictionaries_full/structure/yaccl"
+
+paths <- parse_yaml_paths()
+
+load_lotus()
 
 already_classified <- list.files(fromYaccl_path) |>
   gsub(
@@ -29,7 +31,7 @@ already_classified <- list.files(fromYaccl_path) |>
 
 message("exporting unique LOTUS 2D structures for yaccl classification")
 smiles_2D_classified <- readr::read_delim(
-  file = lotus_metadata_path,
+  file = paths$inst$extdata$source$libraries$lotus,
   col_select = c("smiles" = "structure_smiles_2D")
 ) |>
   dplyr::distinct() |>
@@ -41,7 +43,7 @@ smiles_2D_classified <- readr::read_delim(
     col_names = FALSE
   )
 
-message(nrow(smiles_2D_classified), "to go")
+message(nrow(smiles_2D_classified), " smiles to go")
 
 end <- Sys.time()
 

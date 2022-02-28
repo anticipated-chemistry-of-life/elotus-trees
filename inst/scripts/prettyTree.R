@@ -43,12 +43,7 @@ params <- parse_yaml_params()
 export_dir <- "data/trees"
 export_name <- "full"
 
-if (!file.exists(paths$inst$extdata$source$libraries$lotus)) {
-  message("Downloading LOTUS")
-  get_lotus(export = paths$inst$extdata$source$libraries$lotus)
-} else {
-  message("LOTUS found")
-}
+load_lotus()
 
 lotus <-
   readr::read_delim(file = paths$inst$extdata$source$libraries$lotus) |>

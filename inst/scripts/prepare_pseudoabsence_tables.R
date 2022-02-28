@@ -31,12 +31,7 @@ devtools::source_url(
 paths <- parse_yaml_paths()
 params <- parse_yaml_params()
 
-if (!file.exists(paths$inst$extdata$source$libraries$lotus)) {
-  message("Downloading LOTUS")
-  get_lotus(export = paths$inst$extdata$source$libraries$lotus)
-} else {
-  message("LOTUS found")
-}
+load_lotus()
 
 message("Loading LOTUS")
 lotus <-

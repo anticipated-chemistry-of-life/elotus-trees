@@ -16,6 +16,7 @@ packages_github <- NULL
 
 source(file = "R/check_and_load_packages.R")
 source(file = "R/parse_yaml_paths.R")
+source(file = "R/load_lotus.R")
 
 check_and_load_packages()
 
@@ -28,12 +29,7 @@ devtools::source_url(
 
 paths <- parse_yaml_paths()
 
-if (!file.exists(paths$inst$extdata$source$libraries$lotus)) {
-  message("Downloading LOTUS")
-  get_lotus(export = paths$inst$extdata$source$libraries$lotus)
-} else {
-  message("LOTUS found")
-}
+load_lotus()
 
 message("Loading LOTUS classified structures")
 structures_classified <- readr::read_delim(

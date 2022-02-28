@@ -63,6 +63,8 @@ handlers("progress")
 paths <- parse_yaml_paths()
 params <- parse_yaml_params()
 
+load_lotus()
+
 #' TODO clean this
 export_dir <- "data"
 export_dir_histograms <- file.path(export_dir, "histograms")
@@ -153,13 +155,6 @@ query_part_1 <- readr::read_file(paths$inst$scripts$sparql$review_1)
 query_part_2 <- readr::read_file(paths$inst$scripts$sparql$review_2)
 query_part_3 <- readr::read_file(paths$inst$scripts$sparql$review_3)
 query_part_4 <- readr::read_file(paths$inst$scripts$sparql$review_4)
-
-if (!file.exists(paths$inst$extdata$source$libraries$lotus)) {
-  message("Downloading LOTUS")
-  get_lotus(export = paths$inst$extdata$source$libraries$lotus)
-} else {
-  message("LOTUS found")
-}
 
 message("Loading LOTUS classified structures")
 structures_classified <- readr::read_delim(
