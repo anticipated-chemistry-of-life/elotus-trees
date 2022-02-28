@@ -130,7 +130,6 @@ message(
 )
 message(superclasses |> dplyr::filter(values == 0) |> dplyr::pull(name))
 
-
 message("Class level")
 classes <- structures_final |>
   dplyr::filter(level == "class") |>
