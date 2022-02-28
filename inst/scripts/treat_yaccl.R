@@ -151,7 +151,7 @@ smiles_classified <- full |>
   dplyr::filter(hits.classification_names != "NULL") |>
   dplyr::group_by(molecule, ikey) |>
   dplyr::select(-hits.biological_process) |>
-  #' TODO report this problem to yaccl git.
+  #' https://github.com/rwst/yaccl/issues/11
   #' Actually biological process not linked to all hits
   #' mapping get lost, for the moment simply ignore linked biological processes
   tidyr::unnest(cols = c(hits.classification_names))
