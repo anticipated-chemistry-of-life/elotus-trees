@@ -11,7 +11,7 @@ packages_cran <-
     "tidyr",
     "yaml"
   )
-packages_bioconductor <- NULL
+packages_bioconductor <- c("phyloseq")
 packages_github <- NULL
 
 source(file = "R/check_and_load_packages.R")
@@ -20,7 +20,6 @@ source(file = "R/make_2D.R")
 source(file = "R/parse_yaml_params.R")
 source(file = "R/parse_yaml_paths.R")
 source(file = "R/prepare_occurrence_table.R")
-source(file = "R/prepare_occurrence_referenced_table.R")
 source(file = "R/prepare_referenced_table.R")
 
 check_and_load_packages()
@@ -67,15 +66,26 @@ biological_classes_dictionary <- lotus |>
     organism_taxonomy_10varietas
   )
 
-message("Creating occurrence table")
+message("Creating occurrence tables...")
 #' bio and chemo levels as arguments to later compute all vs all levels
-occurrence_table <- lotus |>
+message("... children + refs")
+occurrence_table_with_children_with_ref <- lotus |>
   prepare_occurrence_table()
 
-message("Creating occurrences referenced table")
-#' bio and chemo levels as arguments to later compute all vs all levels
-occurrence_referenced_table <- lotus |>
-  prepare_occurrence_referenced_table()
+message("... children no refs")
+occurrence_table_with_children_no_ref <- lotus |>
+  prepare_occurrence_table(count_references = FALSE)
+
+message("... no children + refs")
+occurrence_table_no_children_with_ref <- lotus |>
+  prepare_occurrence_table(count_children = FALSE)
+
+message("... no children no refs")
+occurrence_table_no_children_no_ref <- lotus |>
+  prepare_occurrence_table(
+    count_children = FALSE,
+    count_references = FALSE
+  )
 
 message("Creating chemical referenced table")
 #' level as arguments to later compute all vs all levels
@@ -88,24 +98,29 @@ biological_referenced_table <- lotus |>
   prepare_referenced_table(level = params$organisms$level)
 
 #' WIP exploration
-# library(phyloseq)
-# 
-# otu_table <- occurrence_table |>
+# otu_table <- occurrence_table_with_children_with_ref |>
 #   phyloseq::otu_table(taxa_are_rows = TRUE)
-# 
+#
 # sam_data <- chemical_classes_dictionary |>
 #   dplyr::distinct(!!as.name(params$structures$level), .keep_all = TRUE) |>
-#   dplyr::filter(!!as.name(params$structures$level) %in% colnames(occurrence_table)) |>
+#   dplyr::filter(
+#     !!as.name(params$structures$level) %in%
+#       colnames(occurrence_table_with_children_with_ref)
+#   ) |>
 #   tibble::column_to_rownames(var = params$structures$level) |>
 #   dplyr::mutate_all(factor) |>
 #   phyloseq::sample_data()
-# 
+#
 # tax_table <- biological_classes_dictionary |>
 #   dplyr::distinct(!!as.name(params$organisms$level), .keep_all = TRUE) |>
-#   dplyr::filter(!!as.name(params$organisms$level) %in% rownames(occurrence_table)) |>
+#   dplyr::filter(
+#     !!as.name(params$organisms$level) %in%
+#       rownames(occurrence_table_with_children_with_ref)
+#   ) |>
 #   phyloseq::tax_table()
-# 
-# my_phylo <- phyloseq::phyloseq(otu_table = otu_table, sample_data = sam_data)
+#
+# my_phylo <-
+#   phyloseq::phyloseq(otu_table = otu_table, sample_data = sam_data)
 # ## TODO find why it does not accept the taxa table with this method
 # ## temp hack
 # my_phylo@tax_table <- tax_table
@@ -114,6 +129,7 @@ biological_referenced_table <- lotus |>
 #   physeq = my_phylo,
 #   taxa.label = "ta3",
 #   taxa.order = "ta3",
+#   # trans = "identity",
 #   sample.label = "structure_taxonomy_npclassifier_02superclass",
 #   sample.order = "structure_taxonomy_npclassifier_02superclass"
 # )
