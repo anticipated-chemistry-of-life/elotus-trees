@@ -18,11 +18,11 @@ prepare_referenced_table <-
       ) |>
       dplyr::group_by(!!as.name(level)) |>
       dplyr::count() |>
-      tibble::column_to_rownames(var = level) |> 
-      dplyr::mutate_all(as.numeric) |> 
+      tibble::column_to_rownames(var = level) |>
+      dplyr::mutate_all(as.numeric) |>
       as.matrix()
-    
+
     referenced_table[is.na(referenced_table)] <- 0
-    
+
     return(referenced_table)
   }

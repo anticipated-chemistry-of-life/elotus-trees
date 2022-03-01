@@ -22,10 +22,10 @@ prepare_occurrence_table <-
         names_from = !!as.name(chemo_level),
         values_from = n
       ) |>
-      tibble::column_to_rownames(var = bio_level) |> 
-      dplyr::mutate_all(as.numeric) |> 
+      tibble::column_to_rownames(var = bio_level) |>
+      dplyr::mutate_all(as.numeric) |>
       as.matrix()
-    
+
     occurrence_table[is.na(occurrence_table)] <- 0
 
     return(occurrence_table)

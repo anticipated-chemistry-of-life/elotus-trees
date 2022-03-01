@@ -88,17 +88,35 @@ biological_referenced_table <- lotus |>
   prepare_referenced_table(level = params$organisms$level)
 
 #' WIP exploration
-# library(plotly)
-# heatmap_occ <- plot_ly(z = occurrence_table, 
-#                        zauto = FALSE, 
-#                        zmax = 50)
-# heatmap_occ_ref <- plot_ly(z = occurrence_referenced_table, 
-#                            zauto = FALSE, 
-#                            zmax = 50)
-# heatmap_bio <- plot_ly(z = biological_referenced_table, 
-#                        zauto = FALSE, 
-#                        zmax = 500)
-# heatmap_chemo <- plot_ly(z = chemical_referenced_table)
+# library(phyloseq)
+# 
+# otu_table <- occurrence_table |>
+#   phyloseq::otu_table(taxa_are_rows = TRUE)
+# 
+# sam_data <- chemical_classes_dictionary |>
+#   dplyr::distinct(!!as.name(params$structures$level), .keep_all = TRUE) |>
+#   dplyr::filter(!!as.name(params$structures$level) %in% colnames(occurrence_table)) |>
+#   tibble::column_to_rownames(var = params$structures$level) |>
+#   dplyr::mutate_all(factor) |>
+#   phyloseq::sample_data()
+# 
+# tax_table <- biological_classes_dictionary |>
+#   dplyr::distinct(!!as.name(params$organisms$level), .keep_all = TRUE) |>
+#   dplyr::filter(!!as.name(params$organisms$level) %in% rownames(occurrence_table)) |>
+#   phyloseq::tax_table()
+# 
+# my_phylo <- phyloseq::phyloseq(otu_table = otu_table, sample_data = sam_data)
+# ## TODO find why it does not accept the taxa table with this method
+# ## temp hack
+# my_phylo@tax_table <- tax_table
+# ## TODO Work on automatic label/order assignment
+# plot_heatmap(
+#   physeq = my_phylo,
+#   taxa.label = "ta3",
+#   taxa.order = "ta3",
+#   sample.label = "structure_taxonomy_npclassifier_02superclass",
+#   sample.order = "structure_taxonomy_npclassifier_02superclass"
+# )
 
 end <- Sys.time()
 

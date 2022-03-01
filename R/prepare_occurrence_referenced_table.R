@@ -34,11 +34,11 @@ prepare_occurrence_referenced_table <-
         names_from = !!as.name(chemo_level),
         values_from = n
       ) |>
-      tibble::column_to_rownames(var = bio_level) |> 
-      dplyr::mutate_all(as.numeric) |> 
+      tibble::column_to_rownames(var = bio_level) |>
+      dplyr::mutate_all(as.numeric) |>
       as.matrix()
-    
+
     occurrence_referenced_table[is.na(occurrence_referenced_table)] <- 0
-    
+
     return(occurrence_referenced_table)
   }
