@@ -16,6 +16,7 @@ packages_github <- NULL
 source(file = "R/check_and_load_packages.R")
 source(file = "R/load_lotus.R")
 source(file = "R/make_2D.R")
+source(file = "R/make_chromatographiable.R")
 source(file = "R/parse_yaml_params.R")
 source(file = "R/parse_yaml_paths.R")
 source(file = "R/prepare_occurrence_table.R")
@@ -40,6 +41,11 @@ lotus <-
 if (params$structures$dimensionality == 2) {
   lotus <- lotus |>
     make_2D()
+}
+
+if (params$structures$c18 == TRUE) {
+  lotus <- lotus |>
+    make_chromatographiable()
 }
 
 papers <- lotus |>

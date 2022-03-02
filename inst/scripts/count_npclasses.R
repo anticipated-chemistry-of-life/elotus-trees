@@ -16,6 +16,8 @@ packages_github <- NULL
 
 source(file = "R/check_and_load_packages.R")
 source(file = "R/load_lotus.R")
+source(file = "R/make_2D.R")
+source(file = "R/make_chromatographiable.R")
 source(file = "R/parse_yaml_paths.R")
 
 check_and_load_packages()
@@ -44,6 +46,16 @@ structures_classified <- readr::read_delim(
   )
 ) |>
   dplyr::distinct()
+
+if (params$structures$dimensionality == 2) {
+  structures_classified <- structures_classified |>
+    make_2D()
+}
+
+if (params$structures$c18 == TRUE) {
+  structures_classified <- structures_classified |>
+    make_chromatographiable()
+}
 
 message("Loading NPClassifier taxonomy")
 taxonomy <- jsonlite::fromJSON(txt = paths$urls$npc_json)
