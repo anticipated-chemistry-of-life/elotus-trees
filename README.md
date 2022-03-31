@@ -18,7 +18,7 @@ Only thing you will probably need to configure is `remotes` as described [here](
 
 - inst/scripts/count_npclasses.R
 - inst/scripts/papers_taxa_correlation.R (no output written for now)
-- inst/scripts/prepare_pseudoabsence_tables.R (no output written for now)
+- inst/scripts/prepare_pseudoabsence_tables.R
 - inst/scripts/prettyStructuresTable.R
 - inst/scripts/prettyTree.R
 
