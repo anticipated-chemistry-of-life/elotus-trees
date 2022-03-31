@@ -140,6 +140,108 @@ biological_referenced_table <- lotus |>
 #   sample.order = "structure_taxonomy_npclassifier_02superclass"
 # )
 
+message("Exporting tables ...")
+taxo <- gsub(
+  pattern = "_taxonomy_",
+  replacement = "",
+  x = params$organisms$level
+)
+chemo <- gsub(
+  pattern = "_taxonomy_npclassifier_",
+  replacement = "",
+  x = params$structures$level
+)
+filename <- paste0(
+  chemo,
+  "_",
+  taxo
+)
+
+message("... occurrence tables ...")
+message("... no children no ref")
+write.table(
+  x = occurrence_table_no_children_no_ref,
+  file = file.path(
+    paths$data$pseudo$path,
+    paste0(
+      filename,
+      "_noChildren",
+      "_noRef",
+      ".csv"
+    )
+  )
+)
+message("... no children with ref")
+write.table(
+  x = occurrence_table_no_children_with_ref,
+  file = file.path(
+    paths$data$pseudo$path,
+    paste0(
+      filename,
+      "_noChildren",
+      "_ref",
+      ".csv"
+    )
+  )
+)
+message("... with children no ref")
+write.table(
+  x = occurrence_table_with_children_no_ref,
+  file = file.path(
+    paths$data$pseudo$path,
+    paste0(
+      filename,
+      "_children",
+      "_noRef",
+      ".csv"
+    )
+  )
+)
+message("... with children with ref")
+write.table(
+  x = occurrence_table_with_children_with_ref,
+  file = file.path(
+    paths$data$pseudo$path,
+    paste0(
+      filename,
+      "_children",
+      "_ref",
+      ".csv"
+    )
+  )
+)
+message("... references per chemical")
+write.table(
+  x = chemical_referenced_table,
+  file = file.path(
+    paths$data$pseudo$path,
+    paste0(
+      chemo,
+      "_references",
+      ".csv"
+    )
+  )
+)
+message("... references per taxon")
+write.table(
+  x = biological_referenced_table,
+  file = file.path(
+    paths$data$pseudo$path,
+    paste0(
+      taxo,
+      "_references",
+      ".csv"
+    )
+  )
+)
+message("... chemical dictionary")
+write.table(
+  x = chemical_classes_dictionary,
+  file = file.path(
+    paths$data$pseudo$path,
+    "chemical_dictionary.csv"
+  )
+)
 end <- Sys.time()
 
 log_debug("Script finished in", format(end - start))

@@ -46,6 +46,10 @@ vignettes/*.pdf
 .vscode
 
 # Repo specific
-config/params/**
-data/**
-inst/extdata/**
+config/params/
+data/histograms/
+data/sunbursts/
+data/tables/
+data/treemaps/
+data/trees/
+inst/extdata/

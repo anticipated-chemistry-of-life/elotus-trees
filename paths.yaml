@@ -11,6 +11,8 @@ data:
   path: data
   histograms:
     path: data/histograms
+  pseudo:
+    path: data/pseudo
   sunbursts:
     path: data/sunbursts
   tables:
