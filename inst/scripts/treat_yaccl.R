@@ -14,7 +14,8 @@ packages_bioconductor <- NULL
 packages_github <- NULL
 
 source(file = "R/check_and_load_packages.R")
-check_and_load_packages()
+check_and_load_packages_1()
+check_and_load_packages_2()
 
 fromYaccl_path <-
   "~/Git/lotus-processor/data/interim/dictionaries_full/structure/yaccl"
