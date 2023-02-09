@@ -156,6 +156,8 @@ filename <- paste0(
   taxo
 )
 
+create_dir(paths$data$pseudo$path)
+
 message("... occurrence tables ...")
 message("... no children no ref")
 write.table(
