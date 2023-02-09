@@ -22,9 +22,4 @@ Only thing you will probably need to configure is `remotes` as described [here](
 - inst/scripts/prettyStructuresTable.R
 - inst/scripts/prettyTree.R
 
-## Dirty non-portable scripts (work in progress)
-
-- inst/scripts/export_for_yaccl.R
-- inst/scripts/treat_yaccl.R
-
 This README will be improved over time.
