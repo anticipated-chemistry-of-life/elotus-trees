@@ -1,4 +1,3 @@
-source(file = "R/log_debug.R")
 start <- Sys.time()
 
 #' Packages
@@ -14,11 +13,22 @@ packages_cran <-
 packages_bioconductor <- NULL
 packages_github <- NULL
 
+source(
+  "https://raw.githubusercontent.com/taxonomicallyinformedannotation/tima-r/main/R/create_dir.R"
+)
+source(
+  "https://raw.githubusercontent.com/taxonomicallyinformedannotation/tima-r/main/R/get_last_version_from_zenodo.R"
+)
+source(
+  "https://raw.githubusercontent.com/taxonomicallyinformedannotation/tima-r/main/R/log_debug.R"
+)
+source(
+  "https://raw.githubusercontent.com/taxonomicallyinformedannotation/tima-r/main/R/parse_yaml_paths.R"
+)
 source(file = "R/check_and_load_packages.R")
-source(file = "R/load_lotus.R")
 source(file = "R/make_2D.R")
 source(file = "R/make_chromatographiable.R")
-source(file = "R/parse_yaml_paths.R")
+source(file = "R/parse_yaml_params.R")
 
 check_and_load_packages_1()
 check_and_load_packages_2()
@@ -26,21 +36,24 @@ check_and_load_packages_2()
 devtools::source_url(
   "https://raw.githubusercontent.com/lotusnprod/lotus-processor/main/src/r/treat_npclassifier_json.R"
 )
-devtools::source_url(
-  "https://raw.githubusercontent.com/taxonomicallyinformedannotation/tima-r/main/R/get_lotus.R"
-)
 
 paths <- parse_yaml_paths()
+params <- parse_yaml_params()
 
-load_lotus()
+get_last_version_from_zenodo(
+  doi = paths$url$lotus$doi,
+  pattern = paths$urls$lotus$pattern,
+  path = paths$data$source$libraries$lotus
+)
 
 message("Loading LOTUS classified structures")
 structures_classified <- readr::read_delim(
-  file = paths$inst$extdata$source$libraries$lotus,
+  file = paths$data$source$libraries$lotus,
   col_select = c(
     "structure_id" = "structure_inchikey",
     # "structure_exact_mass",
     # "structure_xlogp",
+    structure_smiles_2D,
     "chemical_pathway" = "structure_taxonomy_npclassifier_01pathway",
     "chemical_superclass" = "structure_taxonomy_npclassifier_02superclass",
     "chemical_class" = "structure_taxonomy_npclassifier_03class"

@@ -1,8 +1,6 @@
 require(package = purrr, quietly = TRUE)
 require(package = yaml, quietly = TRUE)
 
-source(file = "R/log_debug.R")
-
 #' Title
 #'
 #' @return
@@ -10,7 +8,7 @@ source(file = "R/log_debug.R")
 #'
 #' @examples
 parse_yaml_params <- function() {
-  log_debug("Loading yaml parameters")
+  message("Loading yaml parameters")
   suppressWarnings(params <-
     yaml::read_yaml(
       file = paths$config$default$file,
