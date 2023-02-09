@@ -13,6 +13,12 @@ packages_cran <-
 packages_bioconductor <- c("phyloseq")
 packages_github <- NULL
 
+source(file = "R/check_and_load_packages.R")
+source(file = "R/load_lotus.R")
+source(file = "R/parse_yaml_params.R")
+source(file = "R/prepare_occurrence_table.R")
+source(file = "R/prepare_referenced_table.R")
+
 check_and_load_packages_1()
 check_and_load_packages_2()
 
@@ -25,12 +31,6 @@ source(
 
 source(file = "https://raw.githubusercontent.com/Adafede/cascade/main/R/make_2D.R")
 source(file = "https://raw.githubusercontent.com/Adafede/cascade/main/R/make_chromatographiable.R")
-
-source(file = "R/check_and_load_packages.R")
-source(file = "R/load_lotus.R")
-source(file = "R/parse_yaml_params.R")
-source(file = "R/prepare_occurrence_table.R")
-source(file = "R/prepare_referenced_table.R")
 
 paths <- parse_yaml_paths()
 params <- parse_yaml_params()

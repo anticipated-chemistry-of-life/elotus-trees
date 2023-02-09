@@ -18,6 +18,10 @@ packages_cran <-
 packages_bioconductor <- c("ggtree", "ggtreeExtra", "ggstar")
 packages_github <- c("KarstensLab/microshades")
 
+source(file = "R/check_and_load_packages.R")
+source(file = "R/load_lotus.R")
+source(file = "R/parse_yaml_params.R")
+
 check_and_load_packages_1()
 check_and_load_packages_2()
 
@@ -33,10 +37,6 @@ source(file = "https://raw.githubusercontent.com/Adafede/cascade/main/R/make_2D.
 source(file = "https://raw.githubusercontent.com/Adafede/cascade/main/R/make_chromatographiable.R")
 source(file = "https://raw.githubusercontent.com/Adafede/cascade/main/R/prepare_hierarchy.R")
 source(file = "https://raw.githubusercontent.com/Adafede/cascade/main/R/prepare_plot.R")
-
-source(file = "R/check_and_load_packages.R")
-source(file = "R/load_lotus.R")
-source(file = "R/parse_yaml_params.R")
 
 paths <- parse_yaml_paths()
 params <- parse_yaml_params()
