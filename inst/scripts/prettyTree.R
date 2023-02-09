@@ -3,6 +3,7 @@ start <- Sys.time()
 #' Packages
 packages_cran <-
   c(
+    "cowplot", ## for microshades
     "data.table",
     "devtools",
     "dplyr",
