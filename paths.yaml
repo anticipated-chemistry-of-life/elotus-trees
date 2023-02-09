@@ -22,12 +22,12 @@ data:
   trees:
     path: data/trees
   interim:
-      path: inst/extdata/interim/
+      path: data/interim/
   source:
-      path: inst/extdata/source/
+      path: data/source/
       libraries:
-        path: inst/extdata/source/libraries
-        lotus: inst/extdata/source/libraries/lotus.csv.gz  
+        path: data/source/libraries
+        lotus: data/source/libraries/lotus.csv.gz  
 inst:
   path: intst
   extdata:

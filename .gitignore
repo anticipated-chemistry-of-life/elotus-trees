@@ -48,8 +48,9 @@ vignettes/*.pdf
 # Repo specific
 config/params/
 data/histograms/
+data/pseudo/
+data/source/
 data/sunbursts/
 data/tables/
 data/treemaps/
 data/trees/
-inst/extdata/

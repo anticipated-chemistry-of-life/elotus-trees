@@ -335,14 +335,14 @@ save_histograms_progress(names(histograms))
 # reticulate::conda_install('r-reticulate', 'plotly', channel = 'plotly')
 # reticulate::use_miniconda('r-reticulate')
 
-message("Exporting sunbursts")
-save_treemaps_progress(
-  xs = names(sunbursts),
-  type = "sunburst"
-)
+# message("Exporting sunbursts")
+# save_treemaps_progress(
+#   xs = names(sunbursts),
+#   type = "sunburst"
+# )
 
-message("Exporting treemaps")
-save_treemaps_progress(xs = names(treemaps))
+# message("Exporting treemaps")
+# save_treemaps_progress(xs = names(treemaps))
 
 end <- Sys.time()
 
