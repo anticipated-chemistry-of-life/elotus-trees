@@ -59,7 +59,7 @@ check_and_load_packages_2 <- function(cran = packages_cran,
     BiocManager::install(bioconductor[!installed_packages_bioconductor])
   }
   if (any(installed_packages_github == FALSE)) {
-    lapply(X = github[!installed_packages_github], FUN = remotes::install_github, dependencies = NA)
+    lapply(X = github[!installed_packages_github], FUN = remotes::install_github, dependencies = TRUE)
   }
 
   return(lapply(
