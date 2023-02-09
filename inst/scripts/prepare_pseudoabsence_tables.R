@@ -1,4 +1,3 @@
-source(file = "R/log_debug.R")
 start <- Sys.time()
 
 #' Packages
@@ -14,30 +13,29 @@ packages_cran <-
 packages_bioconductor <- c("phyloseq")
 packages_github <- NULL
 
+source(
+  "https://raw.githubusercontent.com/taxonomicallyinformedannotation/tima-r/main/R/log_debug.R"
+)
+source(
+  "https://raw.githubusercontent.com/taxonomicallyinformedannotation/tima-r/main/R/parse_yaml_paths.R"
+)
+
+source(file = "https://raw.githubusercontent.com/Adafede/cascade/main/R/make_2D.R")
+source(file = "https://raw.githubusercontent.com/Adafede/cascade/main/R/make_chromatographiable.R")
+
 source(file = "R/check_and_load_packages.R")
 source(file = "R/load_lotus.R")
-source(file = "R/make_2D.R")
-source(file = "R/make_chromatographiable.R")
 source(file = "R/parse_yaml_params.R")
-source(file = "R/parse_yaml_paths.R")
 source(file = "R/prepare_occurrence_table.R")
 source(file = "R/prepare_referenced_table.R")
 
 check_and_load_packages_1()
 check_and_load_packages_2()
 
-devtools::source_url(
-  "https://raw.githubusercontent.com/taxonomicallyinformedannotation/tima-r/main/R/get_lotus.R"
-)
-
 paths <- parse_yaml_paths()
 params <- parse_yaml_params()
 
-load_lotus()
-
-message("Loading LOTUS")
-lotus <-
-  readr::read_delim(file = paths$inst$extdata$source$libraries$lotus)
+lotus <- load_lotus()
 
 if (params$structures$dimensionality == 2) {
   lotus <- lotus |>

@@ -11,4 +11,10 @@ load_lotus <- function() {
     pattern = paths$urls$lotus$pattern,
     path = paths$data$source$libraries$lotus
   )
+
+  message("Loading LOTUS")
+  lotus <-
+    readr::read_delim(file = paths$data$source$libraries$lotus)
+
+  return(lotus)
 }

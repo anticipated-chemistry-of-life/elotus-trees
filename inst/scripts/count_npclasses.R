@@ -2,12 +2,14 @@ start <- Sys.time()
 
 #' Packages
 packages_cran <-
-  c("devtools",
+  c(
+    "devtools",
     "dplyr",
     "jsonlite",
     "readr",
     "tidyr",
-    "yaml")
+    "yaml"
+  )
 packages_bioconductor <- NULL
 packages_github <- NULL
 
@@ -17,10 +19,12 @@ source(
 source(
   "https://raw.githubusercontent.com/taxonomicallyinformedannotation/tima-r/main/R/parse_yaml_paths.R"
 )
+
+source(file = "https://raw.githubusercontent.com/Adafede/cascade/main/R/make_2D.R")
+source(file = "https://raw.githubusercontent.com/Adafede/cascade/main/R/make_chromatographiable.R")
+
 source(file = "R/check_and_load_packages.R")
 source(file = "R/load_lotus.R")
-source(file = "R/make_2D.R")
-source(file = "R/make_chromatographiable.R")
 source(file = "R/parse_yaml_params.R")
 
 check_and_load_packages_1()
@@ -33,21 +37,19 @@ devtools::source_url(
 paths <- parse_yaml_paths()
 params <- parse_yaml_params()
 
-load_lotus()
+lotus <- load_lotus()
 
-message("Loading LOTUS classified structures")
-structures_classified <- readr::read_delim(
-  file = paths$data$source$libraries$lotus,
-  col_select = c(
-    "structure_id" = "structure_inchikey",
+message("Keeping classified structures")
+structures_classified <- lotus |>
+  dplyr::select(
+    structure_id = structure_inchikey,
     # "structure_exact_mass",
     # "structure_xlogp",
     structure_smiles_2D,
-    "chemical_pathway" = "structure_taxonomy_npclassifier_01pathway",
-    "chemical_superclass" = "structure_taxonomy_npclassifier_02superclass",
-    "chemical_class" = "structure_taxonomy_npclassifier_03class"
-  )
-) |>
+    chemical_pathway = structure_taxonomy_npclassifier_01pathway,
+    chemical_superclass = structure_taxonomy_npclassifier_02superclass,
+    chemical_class = structure_taxonomy_npclassifier_03class
+  ) |>
   dplyr::distinct()
 
 if (params$structures$dimensionality == 2) {
@@ -65,9 +67,11 @@ taxonomy <- jsonlite::fromJSON(txt = paths$urls$npc_json)
 
 message("Cleaning NPClassifier taxonomy")
 taxonomy_semiclean <- treat_npclassifier_json() |>
-  tidyr::pivot_longer(cols = 1:3,
-                      names_to = "level",
-                      values_to = "name") |>
+  tidyr::pivot_longer(
+    cols = 1:3,
+    names_to = "level",
+    values_to = "name"
+  ) |>
   dplyr::distinct()
 
 message("Counting structure per group")
@@ -80,12 +84,16 @@ structures_count <- structures_classified |>
   dplyr::add_count(name = "superclass") |>
   dplyr::group_by(chemical_pathway) |>
   dplyr::add_count(name = "pathway") |>
-  tidyr::pivot_longer(cols = 5:7,
-                      names_to = "level",
-                      values_to = "values") |>
-  tidyr::pivot_longer(cols = 2:4,
-                      names_to = "class_name",
-                      values_to = "name") |>
+  tidyr::pivot_longer(
+    cols = 5:7,
+    names_to = "level",
+    values_to = "values"
+  ) |>
+  tidyr::pivot_longer(
+    cols = 2:4,
+    names_to = "class_name",
+    values_to = "name"
+  ) |>
   dplyr::distinct(name, values, level) |>
   dplyr::bind_rows(data.frame(
     "level" = c("pathway", "superclass", "class"),
@@ -156,14 +164,14 @@ message(classes |> dplyr::filter(values == 0) |> dplyr::pull(name))
 message(
   "We have ",
   nrow(structures_classified |>
-         dplyr::filter(
-           is.na(chemical_pathway) &
-             is.na(chemical_superclass) &
-             is.na(chemical_class)
-         )),
+    dplyr::filter(
+      is.na(chemical_pathway) &
+        is.na(chemical_superclass) &
+        is.na(chemical_class)
+    )),
   " on ",
   nrow(structures_classified |>
-         dplyr::distinct(structure_id)),
+    dplyr::distinct(structure_id)),
   " LOTUS structures that are not classified at all by NPClassifier"
 )
 

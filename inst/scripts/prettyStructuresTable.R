@@ -1,4 +1,3 @@
-source(file = "R/log_debug.R")
 start <- Sys.time()
 
 #' Packages
@@ -25,40 +24,42 @@ packages_cran <-
 packages_bioconductor <- NULL
 packages_github <- c("KarstensLab/microshades")
 
+source(
+  "https://raw.githubusercontent.com/taxonomicallyinformedannotation/tima-r/main/R/log_debug.R"
+)
+source(
+  "https://raw.githubusercontent.com/taxonomicallyinformedannotation/tima-r/main/R/parse_yaml_paths.R"
+)
+
+source(file = "https://raw.githubusercontent.com/Adafede/cascade/main/R/colors.R")
+source(file = "https://raw.githubusercontent.com/Adafede/cascade/main/R/format_gt.R")
+source(file = "https://raw.githubusercontent.com/Adafede/cascade/main/R/make_2D.R")
+source(file = "https://raw.githubusercontent.com/Adafede/cascade/main/R/make_chromatographiable.R")
+source(file = "https://raw.githubusercontent.com/Adafede/cascade/main/R/hierarchies_progress.R")
+source(file = "https://raw.githubusercontent.com/Adafede/cascade/main/R/hierarchies_grouped_progress.R")
+source(file = "https://raw.githubusercontent.com/Adafede/cascade/main/R/histograms_progress.R")
+source(file = "https://raw.githubusercontent.com/Adafede/cascade/main/R/molinfo.R")
+source(file = "R/plot_histograms.R") ## to fix
+source(file = "https://raw.githubusercontent.com/Adafede/cascade/main/R/prehistograms_progress.R")
+source(file = "https://raw.githubusercontent.com/Adafede/cascade/main/R/prepare_hierarchy.R")
+source(file = "https://raw.githubusercontent.com/Adafede/cascade/main/R/prepare_plot.R")
+source(file = "https://raw.githubusercontent.com/Adafede/cascade/main/R/prettyTables_progress.R")
+source(file = "https://raw.githubusercontent.com/Adafede/cascade/main/R/queries_progress.R")
+source(file = "https://raw.githubusercontent.com/Adafede/cascade/main/R/save_histograms_progress.R")
+source(file = "https://raw.githubusercontent.com/Adafede/cascade/main/R/save_prettyTables_progress.R")
+source(file = "https://raw.githubusercontent.com/Adafede/cascade/main/R/save_prettySubtables_progress.R")
+source(file = "https://raw.githubusercontent.com/Adafede/cascade/main/R/save_treemaps_progress.R")
+source(file = "https://raw.githubusercontent.com/Adafede/cascade/main/R/subtables_progress.R")
+source(file = "https://raw.githubusercontent.com/Adafede/cascade/main/R/tables_progress.R")
+source(file = "https://raw.githubusercontent.com/Adafede/cascade/main/R/treemaps_progress.R")
+source(file = "https://raw.githubusercontent.com/Adafede/cascade/main/R/wiki_progress.R")
+
 source(file = "R/check_and_load_packages.R")
-source(file = "R/check_export_dir.R")
-source(file = "R/colors.R")
-source(file = "R/format_gt.R")
-source(file = "R/hierarchies_progress.R")
-source(file = "R/hierarchies_grouped_progress.R")
-source(file = "R/histograms_progress.R")
 source(file = "R/load_lotus.R")
-source(file = "R/make_2D.R")
-source(file = "R/make_chromatographiable.R")
-source(file = "R/molinfo.R")
 source(file = "R/parse_yaml_params.R")
-source(file = "R/parse_yaml_paths.R")
-source(file = "R/plot_histograms.R")
-source(file = "R/prehistograms_progress.R")
-source(file = "R/prepare_hierarchy.R")
-source(file = "R/prepare_plot.R")
-source(file = "R/prettyTables_progress.R")
-source(file = "R/queries_progress.R")
-source(file = "R/save_histograms_progress.R")
-source(file = "R/save_prettySubtables_progress.R")
-source(file = "R/save_prettyTables_progress.R")
-source(file = "R/save_treemaps_progress.R")
-source(file = "R/subtables_progress.R")
-source(file = "R/tables_progress.R")
-source(file = "R/treemaps_progress.R")
-source(file = "R/wiki_progress.R")
 
 check_and_load_packages_1()
 check_and_load_packages_2()
-
-devtools::source_url(
-  "https://raw.githubusercontent.com/taxonomicallyinformedannotation/tima-r/main/R/get_lotus.R"
-)
 
 future::plan(strategy = future::multisession)
 handlers(global = TRUE)
@@ -67,7 +68,7 @@ handlers("progress")
 paths <- parse_yaml_paths()
 params <- parse_yaml_params()
 
-load_lotus()
+lotus <- load_lotus()
 
 exports <-
   list(
@@ -110,7 +111,7 @@ qids <- list(
   "Taraxacum officinale" = "Q131219",
   "Rheum palmatum" = "Q1109580",
   "Arnica montana" = "Q207848",
-  "Cinchona succirubra" = "Q50830790",
+  "Cinchona pubescens" = "Q164574",
   "Ginkgo biloba" = "Q43284",
   "Panax ginseng" = "Q182881",
   "Salvia officinalis" = "Q1111359"
@@ -128,7 +129,7 @@ qids <- list(
 comparison <-
   c(
     "Arnica montana",
-    "Cinchona succirubra",
+    "Cinchona pubescens",
     "Ginkgo biloba",
     "Panax ginseng",
     "Salvia officinalis"
@@ -149,17 +150,15 @@ query_part_3 <- readr::read_file(paths$inst$scripts$sparql$review_3)
 query_part_4 <- readr::read_file(paths$inst$scripts$sparql$review_4)
 
 message("Loading LOTUS classified structures")
-structures_classified <- readr::read_delim(
-  file = paths$inst$extdata$source$libraries$lotus,
-  col_select = c(
-    "structure_id" = "structure_inchikey",
-    "structure_smiles_2D",
-    "structure_exact_mass",
-    "structure_xlogp",
-    "chemical_pathway" = "structure_taxonomy_npclassifier_01pathway",
-    "chemical_superclass" = "structure_taxonomy_npclassifier_02superclass",
-    "chemical_class" = "structure_taxonomy_npclassifier_03class"
-  )
+structures_classified <- lotus |> 
+  dplyr::select(
+    structure_id = structure_inchikey,
+    structure_smiles_2D,
+    structure_exact_mass,
+    structure_xlogp,
+    chemical_pathway = structure_taxonomy_npclassifier_01pathway,
+    chemical_superclass = structure_taxonomy_npclassifier_02superclass,
+    chemical_class = structure_taxonomy_npclassifier_03class
 ) |>
   dplyr::distinct()
 
@@ -211,13 +210,10 @@ prettySubtables <- prettyTables_progress(subtables)
 
 message("Generating chemical hierarchies...")
 message("... for single taxa")
-hierarchies_simple <-
-  hierarchies_progress(tables[!grepl(
-    pattern = "\\W+",
-    x = names(tables)
-  )])
+hierarchies_simple <- hierarchies_progress(tables)
 message("... for grouped taxa")
 hierarchies_grouped <- hierarchies_grouped_progress(tables)
+hierarchies_grouped <- hierarchies_grouped[lengths(hierarchies_grouped)!=0]
 message("... combining")
 names(hierarchies_grouped) <- ifelse(
   test = !grepl(
@@ -308,7 +304,7 @@ sunbursts <-
     )])
   )
 
-lapply(X = exports, FUN = check_export_dir)
+lapply(X = exports, FUN = create_dir)
 
 message("Exporting html tables")
 save_prettyTables_progress(names(prettyTables))

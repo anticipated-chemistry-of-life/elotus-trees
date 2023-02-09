@@ -28,15 +28,16 @@ prepare_occurrence_table <-
 
     if (count_children == FALSE) {
       filtered_table <- filtered_table |>
-        dplyr::distinct(dplyr::across(dplyr::any_of(
-          c(
-            bio_level,
-            chemo_level,
-            "reference_wikidata",
-            "reference_doi"
-          )
-        )),
-        .keep_all = TRUE
+        dplyr::distinct(
+          dplyr::across(dplyr::any_of(
+            c(
+              bio_level,
+              chemo_level,
+              "reference_wikidata",
+              "reference_doi"
+            )
+          )),
+          .keep_all = TRUE
         )
     }
 
