@@ -1,6 +1,3 @@
-source(file = "R/log_debug.R")
-log_debug("This script plots an alternative magic tree.")
-
 start <- Sys.time()
 
 #' Packages
@@ -21,23 +18,25 @@ packages_cran <-
 packages_bioconductor <- c("ggtree", "ggtreeExtra", "ggstar")
 packages_github <- c("KarstensLab/microshades")
 
+source(
+  "https://raw.githubusercontent.com/taxonomicallyinformedannotation/tima-r/main/R/log_debug.R"
+)
+source(
+  "https://raw.githubusercontent.com/taxonomicallyinformedannotation/tima-r/main/R/parse_yaml_paths.R"
+)
+
+source(file = "https://raw.githubusercontent.com/Adafede/cascade/main/R/colors.R")
+source(file = "https://raw.githubusercontent.com/Adafede/cascade/main/R/make_2D.R")
+source(file = "https://raw.githubusercontent.com/Adafede/cascade/main/R/make_chromatographiable.R")
+source(file = "https://raw.githubusercontent.com/Adafede/cascade/main/R/prepare_hierarchy.R")
+source(file = "https://raw.githubusercontent.com/Adafede/cascade/main/R/prepare_plot.R")
+
 source(file = "R/check_and_load_packages.R")
-source(file = "R/check_export_dir.R")
-source(file = "R/colors.R")
 source(file = "R/load_lotus.R")
-source(file = "R/make_2D.R")
-source(file = "R/make_chromatographiable.R")
 source(file = "R/parse_yaml_params.R")
-source(file = "R/parse_yaml_paths.R")
-source(file = "R/prepare_hierarchy.R")
-source(file = "R/prepare_plot.R")
 
 check_and_load_packages_1()
 check_and_load_packages_2()
-
-devtools::source_url(
-  "https://raw.githubusercontent.com/taxonomicallyinformedannotation/tima-r/main/R/get_lotus.R"
-)
 
 paths <- parse_yaml_paths()
 params <- parse_yaml_params()
@@ -49,10 +48,7 @@ export_name <-
     no = "full"
   )
 
-load_lotus()
-
-lotus <-
-  readr::read_delim(file = paths$inst$extdata$source$libraries$lotus) |>
+lotus <- load_lotus() |>
   data.table::data.table()
 
 if (params$structures$dimensionality == 2) {
@@ -76,8 +72,7 @@ if (!is.na(params$organisms$taxon)) {
 
 taxon_restricted <- taxon_prerestricted |>
   dplyr::filter(!is.na(!!as.name(params$organisms$group))) |>
-  dplyr::distinct(structure_inchikey,
-    !!as.name(params$organisms$group),
+  dplyr::distinct(structure_inchikey, !!as.name(params$organisms$group),
     .keep_all = TRUE
   ) |>
   dplyr::group_by(!!as.name(params$organisms$group)) |>
@@ -442,7 +437,7 @@ p_abs <- p +
     na.value = "grey"
   )
 
-lapply(X = paths$data$trees$path, FUN = check_export_dir)
+lapply(X = paths$data$trees$path, FUN = create_dir)
 
 ggplot2::ggsave(
   filename = file.path(

@@ -150,7 +150,7 @@ query_part_3 <- readr::read_file(paths$inst$scripts$sparql$review_3)
 query_part_4 <- readr::read_file(paths$inst$scripts$sparql$review_4)
 
 message("Loading LOTUS classified structures")
-structures_classified <- lotus |> 
+structures_classified <- lotus |>
   dplyr::select(
     structure_id = structure_inchikey,
     structure_smiles_2D,
@@ -159,7 +159,7 @@ structures_classified <- lotus |>
     chemical_pathway = structure_taxonomy_npclassifier_01pathway,
     chemical_superclass = structure_taxonomy_npclassifier_02superclass,
     chemical_class = structure_taxonomy_npclassifier_03class
-) |>
+  ) |>
   dplyr::distinct()
 
 # organisms_classified <- readr::read_delim(
@@ -213,7 +213,7 @@ message("... for single taxa")
 hierarchies_simple <- hierarchies_progress(tables)
 message("... for grouped taxa")
 hierarchies_grouped <- hierarchies_grouped_progress(tables)
-hierarchies_grouped <- hierarchies_grouped[lengths(hierarchies_grouped)!=0]
+hierarchies_grouped <- hierarchies_grouped[lengths(hierarchies_grouped) != 0]
 message("... combining")
 names(hierarchies_grouped) <- ifelse(
   test = !grepl(
