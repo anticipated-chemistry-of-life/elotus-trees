@@ -21,17 +21,17 @@ data:
     path: data/treemaps
   trees:
     path: data/trees
+  interim:
+      path: inst/extdata/interim/
+  source:
+      path: inst/extdata/source/
+      libraries:
+        path: inst/extdata/source/libraries
+        lotus: inst/extdata/source/libraries/lotus.csv.gz  
 inst:
   path: intst
   extdata:
     path: inst/extdata/
-    interim:
-      path: inst/extdata/interim/
-    source:
-      path: inst/extdata/source/
-      libraries:
-        path: inst/extdata/source/libraries
-        lotus: inst/extdata/source/libraries/lotus.csv.gz
   scripts: 
     path: inst/scripts/
     docopt:
@@ -47,5 +47,12 @@ tests:
 r:
   path: R
 urls:
-  lotus: https://zenodo.org/record/6378204/files/220318_frozen_metadata.csv.gz?download=1
-  npc_json: https://raw.githubusercontent.com/mwang87/NP-Classifier/7e4e2001a1416b96968240650dc7d70f1275fdb5/Classifier/dict/index_v1.json
+  lotus:
+    doi: 10.5281/zenodo.5794106
+    pattern: frozen_metadata.csv.gz
+    metadata_doi: 10.5281/zenodo.6378223
+    metadata_pattern:
+      organisms: organism_metadata.tsv.gz
+      references: reference_metadata.tsv.gz
+      structures: structure_metadata.tsv.gz
+  npc_json: https://raw.githubusercontent.com/mwang87/NP-Classifier/master/Classifier/dict/index_v1.json
