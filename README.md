@@ -22,4 +22,8 @@ Only thing you will probably need to configure is `remotes` as described [here](
 - inst/scripts/prettyStructuresTable.R
 - inst/scripts/prettyTree.R
 
+## TODO
+- [ ] Add the possiblity to select the structures by their InChKey. This would allow to dig deeper in the "phylogeny" of the 
+chemical structures. 
+
 This README will be improved over time.
