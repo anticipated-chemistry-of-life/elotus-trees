@@ -1,6 +1,7 @@
 start <- Sys.time()
 
 #' Packages
+#' Define packages to install from CRAN
 packages_cran <-
   c(
     "devtools",
@@ -10,9 +11,12 @@ packages_cran <-
     "tidyr",
     "yaml"
   )
+
+#Define packages to install from Bioconductor
 packages_bioconductor <- c("phyloseq")
 packages_github <- NULL
 
+#Source R script to check and load packages
 source(file = "R/check_and_load_packages.R")
 source(file = "R/load_lotus.R")
 source(file = "R/parse_yaml_params.R")
@@ -162,6 +166,7 @@ message("... occurrence tables ...")
 message("... no children no ref")
 write.table(
   x = occurrence_table_no_children_no_ref,
+  sep = ",",
   file = file.path(
     paths$data$pseudo$path,
     paste0(
@@ -175,6 +180,7 @@ write.table(
 message("... no children with ref")
 write.table(
   x = occurrence_table_no_children_with_ref,
+  sep = ",",
   file = file.path(
     paths$data$pseudo$path,
     paste0(
@@ -188,6 +194,7 @@ write.table(
 message("... with children no ref")
 write.table(
   x = occurrence_table_with_children_no_ref,
+  sep = ",",
   file = file.path(
     paths$data$pseudo$path,
     paste0(
@@ -201,6 +208,7 @@ write.table(
 message("... with children with ref")
 write.table(
   x = occurrence_table_with_children_with_ref,
+  sep = ",",
   file = file.path(
     paths$data$pseudo$path,
     paste0(
@@ -214,6 +222,7 @@ write.table(
 message("... references per chemical")
 write.table(
   x = chemical_referenced_table,
+  sep = ",",
   file = file.path(
     paths$data$pseudo$path,
     paste0(
@@ -226,6 +235,7 @@ write.table(
 message("... references per taxon")
 write.table(
   x = biological_referenced_table,
+  sep = ",",
   file = file.path(
     paths$data$pseudo$path,
     paste0(
@@ -238,6 +248,7 @@ write.table(
 message("... chemical dictionary")
 write.table(
   x = chemical_classes_dictionary,
+  sep = ",",
   file = file.path(
     paths$data$pseudo$path,
     "chemical_dictionary.csv"
