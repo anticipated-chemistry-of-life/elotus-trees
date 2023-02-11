@@ -1,5 +1,5 @@
 structures:
-  dimensionality: 2
+  dimensionality: 3
   min: 25
   level: structure_taxonomy_npclassifier_03class
   c18: FALSE

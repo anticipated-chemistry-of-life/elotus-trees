@@ -9,6 +9,7 @@ structures:
         structure_taxonomy_npclassifier_01pathway
         structure_taxonomy_npclassifier_02superclass
         structure_taxonomy_npclassifier_03class
+        structure_inchikey
 
 organisms:
     level:

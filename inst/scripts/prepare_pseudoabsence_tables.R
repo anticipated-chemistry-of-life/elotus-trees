@@ -57,7 +57,8 @@ chemical_classes_dictionary <- lotus |>
   dplyr::distinct(
     structure_taxonomy_npclassifier_01pathway,
     structure_taxonomy_npclassifier_02superclass,
-    structure_taxonomy_npclassifier_03class
+    structure_taxonomy_npclassifier_03class,
+    structure_inchikey
   )
 
 message("Creating biological classes dictionary")
@@ -149,11 +150,17 @@ taxo <- gsub(
   replacement = "",
   x = params$organisms$level
 )
-chemo <- gsub(
+
+if(params$structures$level=="structure_inchikey"){
+  chemo <- "structure_inchikey"
+} else {
+  chemo <- gsub(
   pattern = "_taxonomy_npclassifier_",
   replacement = "",
   x = params$structures$level
-)
+  )
+}
+
 filename <- paste0(
   chemo,
   "_",
@@ -254,6 +261,13 @@ write.table(
     "chemical_dictionary.csv"
   )
 )
+
+#add name to first column to have same number of headers than number of columns in the data
+setwd(paths$data$pseudo$path)
+x <- "sed -i \"\" -r \"1s/^/\"Name\",/g\" *.csv"
+system(x)
+setwd(paths$base_dir)
+
 end <- Sys.time()
 
 log_debug("Script finished in", format(end - start))
