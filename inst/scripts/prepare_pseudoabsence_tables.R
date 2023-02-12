@@ -44,6 +44,9 @@ lotus <- load_lotus()
 if (params$structures$dimensionality == 2) {
   lotus <- lotus |>
     make_2D()
+} else {
+  source(file = "R/make_3D.R")
+  lotus <- lotus |> make_3D()
 }
 
 if (params$structures$c18 == TRUE) {

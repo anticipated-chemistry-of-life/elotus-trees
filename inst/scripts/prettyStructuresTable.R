@@ -42,6 +42,8 @@ source(
   "https://raw.githubusercontent.com/taxonomicallyinformedannotation/tima-r/main/R/parse_yaml_paths.R"
 )
 
+source(file = "R/make_3D.R")
+
 source(file = "https://raw.githubusercontent.com/Adafede/cascade/main/R/colors.R")
 source(file = "https://raw.githubusercontent.com/Adafede/cascade/main/R/format_gt.R")
 source(file = "https://raw.githubusercontent.com/Adafede/cascade/main/R/make_2D.R")
@@ -153,6 +155,7 @@ message("Loading LOTUS classified structures")
 structures_classified <- lotus |>
   dplyr::select(
     structure_id = structure_inchikey,
+    structure_inchi,
     structure_smiles_2D,
     structure_exact_mass,
     structure_xlogp,
@@ -193,6 +196,8 @@ tables <- tables_progress(results)
 
 if (params$structures$dimensionality == 2) {
   tables <- lapply(tables, make_2D)
+} else {
+  tables <- lapply(tables, make_3D)
 }
 
 if (params$structures$c18 == TRUE) {

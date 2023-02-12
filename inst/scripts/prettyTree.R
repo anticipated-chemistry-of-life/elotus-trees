@@ -31,6 +31,7 @@ source(
 source(
   "https://raw.githubusercontent.com/taxonomicallyinformedannotation/tima-r/main/R/parse_yaml_paths.R"
 )
+source(file = "R/make_3D.R")
 
 source(file = "https://raw.githubusercontent.com/Adafede/cascade/main/R/colors.R")
 source(file = "https://raw.githubusercontent.com/Adafede/cascade/main/R/make_2D.R")
@@ -55,6 +56,8 @@ if (params$structures$dimensionality == 2) {
   lotus <- lotus |>
     make_2D() |>
     data.table::data.table()
+} else {
+  lotus <- lotus |> make_3D() |> data.table::data.table()
 }
 
 if (params$structures$c18 == TRUE) {

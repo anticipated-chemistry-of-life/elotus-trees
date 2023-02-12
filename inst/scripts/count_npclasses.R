@@ -53,6 +53,7 @@ structures_classified <- lotus |>
     structure_id = structure_inchikey,
     # "structure_exact_mass",
     # "structure_xlogp",
+    structure_inchi,
     structure_smiles_2D,
     chemical_pathway = structure_taxonomy_npclassifier_01pathway,
     chemical_superclass = structure_taxonomy_npclassifier_02superclass,
@@ -64,6 +65,9 @@ structures_classified <- lotus |>
 if (params$structures$dimensionality == 2) {
   structures_classified <- structures_classified |>
     make_2D()
+} else {
+  source(file = "R/make_3D.R")
+  structures_classified <- structures_classified |> make_3D()
 }
 
 #Convert the structures to chromatographiable if specified in the parameters
