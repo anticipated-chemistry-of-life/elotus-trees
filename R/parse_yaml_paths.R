@@ -10,6 +10,8 @@ source(file = "R/log_debug.R")
 #'
 #' @examples
 parse_yaml_paths <- function() {
+  ## TODO Almost the same exists in <https://github.com/taxonomicallyinformedannotation/tima-r>
+  ## Try to harmonize both
   log_debug("Loading paths")
   suppressWarnings(paths <- yaml::read_yaml(
     file = "paths.yaml",

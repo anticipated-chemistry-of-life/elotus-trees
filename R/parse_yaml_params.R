@@ -8,6 +8,8 @@ require(package = yaml, quietly = TRUE)
 #'
 #' @examples
 parse_yaml_params <- function() {
+  ## TODO Almost the same exists in <https://github.com/taxonomicallyinformedannotation/tima-r>
+  ## Try to harmonize both
   message("Loading yaml parameters")
   suppressWarnings(params <-
     yaml::read_yaml(

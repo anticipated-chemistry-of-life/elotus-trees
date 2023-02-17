@@ -14,6 +14,8 @@ plot_histograms <-
            label,
            y = "values",
            xlab = TRUE) {
+    ## TODO Almost the same exists in <https://github.com/Adafede/cascade>
+    ## Try to harmonize both
     absolute <- ggplot2::ggplot(
       dataframe,
       ggplot2::aes(
