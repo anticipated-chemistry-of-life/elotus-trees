@@ -2,7 +2,7 @@ start <- Sys.time()
 
 #' Packages
 #' Define the packages to be loaded from CRAN, Bioconductor and Github
-#Currently, only CRAN packages are specified
+# Currently, only CRAN packages are specified
 packages_cran <-
   c(
     "devtools",
@@ -15,16 +15,16 @@ packages_cran <-
 packages_bioconductor <- NULL
 packages_github <- NULL
 
-#Load the package check and load functions
+# Load the package check and load functions
 source(file = "R/check_and_load_packages.R")
 source(file = "R/load_lotus.R")
 source(file = "R/parse_yaml_params.R")
 
-#Check and load the specified packages
+# Check and load the specified packages
 check_and_load_packages_1()
 check_and_load_packages_2()
 
-#Load additional functions from Github
+# Load additional functions from Github
 source(
   "https://raw.githubusercontent.com/taxonomicallyinformedannotation/tima-r/main/R/log_debug.R"
 )
@@ -39,14 +39,14 @@ source(
 source(file = "https://raw.githubusercontent.com/Adafede/cascade/main/R/make_2D.R")
 source(file = "https://raw.githubusercontent.com/Adafede/cascade/main/R/make_chromatographiable.R")
 
-#Parse the Yaml paths and parameters
+# Parse the Yaml paths and parameters
 paths <- parse_yaml_paths()
 params <- parse_yaml_params()
 
-#Load the Lotus data
+# Load the Lotus data
 lotus <- load_lotus()
 
-#Select the relevant columns from the Lotus data
+# Select the relevant columns from the Lotus data
 message("Keeping classified structures")
 structures_classified <- lotus |>
   dplyr::select(
@@ -61,7 +61,7 @@ structures_classified <- lotus |>
   ) |>
   dplyr::distinct()
 
-#Convert the structures to 2D if specified in the parameters
+# Convert the structures to 2D if specified in the parameters
 if (params$structures$dimensionality == 2) {
   structures_classified <- structures_classified |>
     make_2D()
@@ -70,13 +70,13 @@ if (params$structures$dimensionality == 2) {
   structures_classified <- structures_classified |> make_3D()
 }
 
-#Convert the structures to chromatographiable if specified in the parameters
+# Convert the structures to chromatographiable if specified in the parameters
 if (params$structures$c18 == TRUE) {
   structures_classified <- structures_classified |>
     make_chromatographiable()
 }
 
-#Load and clean the NPClassifier taxonomy
+# Load and clean the NPClassifier taxonomy
 message("Loading NPClassifier taxonomy")
 taxonomy <- jsonlite::fromJSON(txt = paths$urls$npc_json)
 
@@ -90,7 +90,7 @@ taxonomy_semiclean <- treat_npclassifier_json() |>
   dplyr::distinct()
 
 
-#Counting structure per group
+# Counting structure per group
 message("Counting structure per group")
 structures_count <- structures_classified |>
   dplyr::filter(!is.na(chemical_class)) |>
@@ -125,7 +125,7 @@ structures_count <- structures_classified |>
     "name" = "Not classified"
   ))
 
-#Combining with NPClassifier taxonomy
+# Combining with NPClassifier taxonomy
 message("Combining with NPClassifier taxonomy")
 structures_final <- taxonomy_semiclean |>
   dplyr::bind_rows(data.frame(
