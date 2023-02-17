@@ -12,11 +12,11 @@ packages_cran <-
     "yaml"
   )
 
-#Define packages to install from Bioconductor
+# Define packages to install from Bioconductor
 packages_bioconductor <- c("phyloseq")
 packages_github <- NULL
 
-#Source R script to check and load packages
+# Source R script to check and load packages
 source(file = "R/check_and_load_packages.R")
 source(file = "R/load_lotus.R")
 source(file = "R/parse_yaml_params.R")
@@ -154,13 +154,13 @@ taxo <- gsub(
   x = params$organisms$level
 )
 
-if(params$structures$level=="structure_inchikey"){
+if (params$structures$level == "structure_inchikey") {
   chemo <- "structure_inchikey"
 } else {
   chemo <- gsub(
-  pattern = "_taxonomy_npclassifier_",
-  replacement = "",
-  x = params$structures$level
+    pattern = "_taxonomy_npclassifier_",
+    replacement = "",
+    x = params$structures$level
   )
 }
 
@@ -265,7 +265,7 @@ write.table(
   )
 )
 
-#add name to first column to have same number of headers than number of columns in the data
+# add name to first column to have same number of headers than number of columns in the data
 setwd(paths$data$pseudo$path)
 x <- "sed -i \"\" -r \"1s/^/\"Name\",/g\" *.csv"
 system(x)

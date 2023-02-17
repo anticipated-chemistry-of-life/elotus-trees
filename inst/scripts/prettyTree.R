@@ -57,7 +57,9 @@ if (params$structures$dimensionality == 2) {
     make_2D() |>
     data.table::data.table()
 } else {
-  lotus <- lotus |> make_3D() |> data.table::data.table()
+  lotus <- lotus |>
+    make_3D() |>
+    data.table::data.table()
 }
 
 if (params$structures$c18 == TRUE) {
