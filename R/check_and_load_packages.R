@@ -6,23 +6,25 @@
 #' @export
 #'
 #' @examples
+install.packages("dplyr")
+library(dplyr)
 check_and_load_packages_1 <- function(cran = packages_cran,
                                       bioconductor = packages_bioconductor,
                                       github = packages_github) {
   installed_packages <- rownames(installed.packages())
 
   if (!is.null(bioconductor)) {
-    cran <- cran |>
+    cran <- cran %>%
       append("BiocManager")
   }
   if (!is.null(github)) {
-    cran <- cran |>
+    cran <- cran %>%
       append("remotes")
   }
 
   installed_packages_cran <- cran %in% installed_packages
 
-  return(lapply(X = cran[!installed_packages_cran], FUN = install.packages) |>
+  return(lapply(X = cran[!installed_packages_cran], FUN = install.packages) %>%
     invisible())
 }
 
@@ -44,11 +46,11 @@ check_and_load_packages_2 <- function(cran = packages_cran,
   installed_packages_github <- github %in% installed_packages
 
   if (!is.null(bioconductor)) {
-    cran <- cran |>
+    cran <- cran %>%
       append("BiocManager")
   }
   if (!is.null(github)) {
-    cran <- cran |>
+    cran <- cran %>%
       append("remotes")
   }
 
@@ -74,6 +76,6 @@ check_and_load_packages_2 <- function(cran = packages_cran,
     ),
     require,
     character.only = TRUE
-  ) |>
+  ) %>%
     invisible())
 }

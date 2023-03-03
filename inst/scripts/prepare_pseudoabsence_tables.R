@@ -22,6 +22,8 @@ source(file = "R/load_lotus.R")
 source(file = "R/parse_yaml_params.R")
 source(file = "R/prepare_occurrence_table.R")
 source(file = "R/prepare_referenced_table.R")
+source(file = "R/make_2D.R")
+source(file = "R/make_chromatographiable.R")
 
 check_and_load_packages_1()
 check_and_load_packages_2()
@@ -33,8 +35,6 @@ source(
   "https://raw.githubusercontent.com/taxonomicallyinformedannotation/tima-r/main/R/parse_yaml_paths.R"
 )
 
-source(file = "https://raw.githubusercontent.com/Adafede/cascade/main/R/make_2D.R")
-source(file = "https://raw.githubusercontent.com/Adafede/cascade/main/R/make_chromatographiable.R")
 
 paths <- parse_yaml_paths()
 params <- parse_yaml_params()
@@ -42,21 +42,21 @@ params <- parse_yaml_params()
 lotus <- load_lotus()
 
 if (params$structures$dimensionality == 2) {
-  lotus <- lotus |>
+  lotus <- lotus %>%
     make_2D()
 } else {
   source(file = "R/make_3D.R")
-  lotus <- lotus |> make_3D()
+  lotus <- lotus %>% make_3D()
 }
 
 if (params$structures$c18 == TRUE) {
-  lotus <- lotus |>
+  lotus <- lotus %>%
     make_chromatographiable()
 }
 
 message("Creating chemical classes dictionary")
-chemical_classes_dictionary <- lotus |>
-  dplyr::filter(!is.na(structure_taxonomy_npclassifier_01pathway)) |>
+chemical_classes_dictionary <- lotus %>%
+  dplyr::filter(!is.na(structure_taxonomy_npclassifier_01pathway)) %>%
   dplyr::distinct(
     structure_taxonomy_npclassifier_01pathway,
     structure_taxonomy_npclassifier_02superclass,
@@ -65,7 +65,7 @@ chemical_classes_dictionary <- lotus |>
   )
 
 message("Creating biological classes dictionary")
-biological_classes_dictionary <- lotus |>
+biological_classes_dictionary <- lotus %>%
   dplyr::distinct(
     organism_taxonomy_01domain,
     organism_taxonomy_02kingdom,
@@ -82,19 +82,19 @@ biological_classes_dictionary <- lotus |>
 message("Creating occurrence tables...")
 #' bio and chemo levels as arguments to later compute all vs all levels
 message("... children + refs")
-occurrence_table_with_children_with_ref <- lotus |>
+occurrence_table_with_children_with_ref <- lotus %>%
   prepare_occurrence_table()
 
 message("... children no refs")
-occurrence_table_with_children_no_ref <- lotus |>
+occurrence_table_with_children_no_ref <- lotus %>%
   prepare_occurrence_table(count_references = FALSE)
 
 message("... no children + refs")
-occurrence_table_no_children_with_ref <- lotus |>
+occurrence_table_no_children_with_ref <- lotus %>%
   prepare_occurrence_table(count_children = FALSE)
 
 message("... no children no refs")
-occurrence_table_no_children_no_ref <- lotus |>
+occurrence_table_no_children_no_ref <- lotus %>%
   prepare_occurrence_table(
     count_children = FALSE,
     count_references = FALSE
@@ -102,34 +102,34 @@ occurrence_table_no_children_no_ref <- lotus |>
 
 message("Creating chemical referenced table")
 #' level as arguments to later compute all vs all levels
-chemical_referenced_table <- lotus |>
+chemical_referenced_table <- lotus %>%
   prepare_referenced_table(level = params$structures$level)
 
 message("Creating biological referenced table")
 #' level as arguments to later compute all vs all levels
-biological_referenced_table <- lotus |>
+biological_referenced_table <- lotus %>%
   prepare_referenced_table(level = params$organisms$level)
 
 #' WIP exploration
-# otu_table <- occurrence_table_with_children_with_ref |>
+# otu_table <- occurrence_table_with_children_with_ref %>%
 #   phyloseq::otu_table(taxa_are_rows = TRUE)
 #
-# sam_data <- chemical_classes_dictionary |>
-#   dplyr::distinct(!!as.name(params$structures$level), .keep_all = TRUE) |>
+# sam_data <- chemical_classes_dictionary %>%
+#   dplyr::distinct(!!as.name(params$structures$level), .keep_all = TRUE) %>%
 #   dplyr::filter(
 #     !!as.name(params$structures$level) %in%
 #       colnames(occurrence_table_with_children_with_ref)
-#   ) |>
-#   tibble::column_to_rownames(var = params$structures$level) |>
-#   dplyr::mutate_all(factor) |>
+#   ) %>%
+#   tibble::column_to_rownames(var = params$structures$level) %>%
+#   dplyr::mutate_all(factor) %>%
 #   phyloseq::sample_data()
 #
-# tax_table <- biological_classes_dictionary |>
-#   dplyr::distinct(!!as.name(params$organisms$level), .keep_all = TRUE) |>
+# tax_table <- biological_classes_dictionary %>%
+#   dplyr::distinct(!!as.name(params$organisms$level), .keep_all = TRUE) %>%
 #   dplyr::filter(
 #     !!as.name(params$organisms$level) %in%
 #       rownames(occurrence_table_with_children_with_ref)
-#   ) |>
+#   ) %>%
 #   phyloseq::tax_table()
 #
 # my_phylo <-

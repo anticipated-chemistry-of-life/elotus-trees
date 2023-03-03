@@ -1,7 +1,7 @@
 structures:
-  dimensionality: 3 # either 2 or 3 
+  dimensionality: 2 # either 2 or 3 
   min: 25
-  level: structure_taxonomy_npclassifier_03class
+  level: structure_inchikey
   c18: FALSE
   mass:
     min: 150
@@ -10,7 +10,7 @@ structures:
     min: -1
     max: 6
 organisms:
-  level: organism_taxonomy_05order
+  level: organism_taxonomy_08genus
   taxon: Gentianales # let empty for no filter
   group: organism_taxonomy_08genus
   subgroup: organism_taxonomy_09species
