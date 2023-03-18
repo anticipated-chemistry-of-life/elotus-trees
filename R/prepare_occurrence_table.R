@@ -44,6 +44,7 @@ prepare_occurrence_table <-
     occurrence_table <- filtered_table %>%
       dplyr::group_by(!!as.name(bio_level), !!as.name(chemo_level)) %>%
       dplyr::count() %>%
+      dplyr::ungroup() %>%
       tidyr::pivot_wider(
         names_from = !!as.name(chemo_level),
         values_from = n

@@ -46,7 +46,8 @@ if (params$structures$dimensionality == 2) {
     make_2D()
 } else {
   source(file = "R/make_3D.R")
-  lotus <- lotus %>% make_3D()
+  lotus <- lotus %>%
+    make_3D()
 }
 
 if (params$structures$c18 == TRUE) {
@@ -60,8 +61,7 @@ chemical_classes_dictionary <- lotus %>%
   dplyr::distinct(
     structure_taxonomy_npclassifier_01pathway,
     structure_taxonomy_npclassifier_02superclass,
-    structure_taxonomy_npclassifier_03class,
-    structure_inchikey
+    structure_taxonomy_npclassifier_03class
   )
 
 message("Creating biological classes dictionary")

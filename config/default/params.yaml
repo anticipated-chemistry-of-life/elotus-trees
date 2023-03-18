@@ -1,7 +1,7 @@
 structures:
   dimensionality: 2 # either 2 or 3 
   min: 25
-  level: structure_inchikey
+  level: structure_taxonomy_npclassifier_03class # don't, too large
   c18: FALSE
   mass:
     min: 150
