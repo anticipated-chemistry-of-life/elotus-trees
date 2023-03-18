@@ -10,7 +10,7 @@ structures:
     min: -1
     max: 6
 organisms:
-  level: organism_taxonomy_08genus
+  level: organism_taxonomy_05order
   taxon: Gentianales # let empty for no filter
   group: organism_taxonomy_08genus
   subgroup: organism_taxonomy_09species

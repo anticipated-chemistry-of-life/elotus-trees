@@ -49,41 +49,41 @@ export_name <-
     no = "full"
   )
 
-lotus <- load_lotus() |>
+lotus <- load_lotus() %>%
   data.table::data.table()
 
 if (params$structures$dimensionality == 2) {
-  lotus <- lotus |>
-    make_2D() |>
+  lotus <- lotus %>%
+    make_2D() %>%
     data.table::data.table()
 } else {
-  lotus <- lotus |>
-    make_3D() |>
+  lotus <- lotus %>%
+    make_3D() %>%
     data.table::data.table()
 }
 
 if (params$structures$c18 == TRUE) {
-  lotus <- lotus |>
-    make_chromatographiable() |>
+  lotus <- lotus %>%
+    make_chromatographiable() %>%
     data.table::data.table()
 }
 
 if (!is.na(params$organisms$taxon)) {
-  taxon_prerestricted <- lotus |>
+  taxon_prerestricted <- lotus %>%
     dplyr::filter(!!as.name(params$organisms$level) == params$organisms$taxon)
 } else {
   taxon_prerestricted <- lotus
 }
 
-taxon_restricted <- taxon_prerestricted |>
-  dplyr::filter(!is.na(!!as.name(params$organisms$group))) |>
+taxon_restricted <- taxon_prerestricted %>%
+  dplyr::filter(!is.na(!!as.name(params$organisms$group))) %>%
   dplyr::distinct(structure_inchikey, !!as.name(params$organisms$group),
     .keep_all = TRUE
-  ) |>
-  dplyr::group_by(!!as.name(params$organisms$group)) |>
-  dplyr::add_count() |>
-  dplyr::ungroup() |>
-  dplyr::filter(n >= params$structures$min) |>
+  ) %>%
+  dplyr::group_by(!!as.name(params$organisms$group)) %>%
+  dplyr::add_count() %>%
+  dplyr::ungroup() %>%
+  dplyr::filter(n >= params$structures$min) %>%
   dplyr::distinct(!!as.name(params$organisms$group))
 
 taxon_matched_restricted <-
