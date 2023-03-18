@@ -6,7 +6,7 @@
 #' @export
 #'
 #' @examples
-# install.packages("dplyr")
+if (!require("dplyr")) install.packages("dplyr")
 require(dplyr)
 check_and_load_packages_1 <- function(cran = packages_cran,
                                       bioconductor = packages_bioconductor,
