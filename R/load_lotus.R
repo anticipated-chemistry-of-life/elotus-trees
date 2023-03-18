@@ -2,6 +2,9 @@ source(
   "https://raw.githubusercontent.com/taxonomicallyinformedannotation/tima-r/main/R/create_dir.R"
 )
 source(
+  "https://raw.githubusercontent.com/taxonomicallyinformedannotation/tima-r/main/R/get_file.R"
+)
+source(
   "https://raw.githubusercontent.com/taxonomicallyinformedannotation/tima-r/main/R/get_last_version_from_zenodo.R"
 )
 
